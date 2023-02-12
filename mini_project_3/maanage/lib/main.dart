@@ -12,36 +12,36 @@ import 'meeting/Createmeeting.dart';
 import 'meeting/MeetingDetail.dart';
 import 'package:firebase_core/firebase_core.dart';
 import './Project/AddProject.dart';
-void main()async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-await Firebase.initializeApp();
-  runApp(MyApp());}
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MAANAGE',
-      
-      
-    //   theme: ThemeData(primarySwatch:  Colors.blue,colorScheme: ColorScheme.fromSwatch().copyWith(
-    // secondary: Color(0xFF3C5BFA)),
-    
-      
-    //   ),
-    theme: Theme.of(context).copyWith(
-  colorScheme: Theme.of(context).colorScheme.copyWith(
-        primary: const Color(0xFF3C5BFA),
+
+      //   theme: ThemeData(primarySwatch:  Colors.blue,colorScheme: ColorScheme.fromSwatch().copyWith(
+      // secondary: Color(0xFF3C5BFA)),
+
+      //   ),
+      theme: Theme.of(context).copyWith(
+        colorScheme: Theme.of(context).colorScheme.copyWith(
+              primary: const Color(0xFF3C5BFA),
+            ),
       ),
-),routes: {'login':(context)=>Login(),
-'companyinfo':(context) => CompanyReg(),
-'createmeeting':(context) => CreateMeeting(),
-'addproject':(context) => AddProject(),
-'project':(context) => ProjectPage(),
-
-
-},
-  initialRoute: 'login',
+      routes: {
+        'login': (context) => Login(),
+        'companyinfo': (context) => CompanyReg(),
+        'createmeeting': (context) => CreateMeeting(),
+        'addproject': (context) => AddProject(),
+        'project': (context) => ProjectPage(),
+      },
+      initialRoute: 'companyinfo',
       // home:  Login(),
     );
   }
@@ -55,9 +55,9 @@ class MaterialMain extends StatefulWidget {
 }
 
 class _MaterialState extends State<MaterialMain> {
-  int _currentIndex=0;
-  
-  final screen=[
+  int _currentIndex = 0;
+
+  final screen = [
     DashBoard(),
     MyEmployee(),
     ProjectPage(),
@@ -65,45 +65,52 @@ class _MaterialState extends State<MaterialMain> {
     Profile()
   ];
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
-      body:IndexedStack(index: _currentIndex,children: <Widget>[...screen],) ,
-       bottomNavigationBar:  BottomNavigationBar(currentIndex: _currentIndex,
-  // type: BottomNavigationBarType.fixed,
-        items:  const [          BottomNavigationBarItem(
-            icon: Icon(Icons.home,),
-            label: 'Home',
-            backgroundColor: Color(0xFF3C5BFA)             
-            
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline,),
-            label: 'Employees',
-            backgroundColor: Color(0xFF3C5BFA)
-          ), BottomNavigationBarItem(
-            icon:Icon(Icons.border_all_rounded),
-            label: 'Project',
-            backgroundColor: Color(0xFF3C5BFA)
-          ), BottomNavigationBarItem(
-            icon:Icon(Icons.assessment_outlined ),
-            label: 'Report',
-            backgroundColor: Color(0xFF3C5BFA)
-          ), BottomNavigationBarItem(
-            icon:CircleAvatar(  foregroundColor: Color(0xFF3C5BFA),
-              backgroundImage: NetworkImage(
-                                'https://picsum.photos/250?image=9',),
-                            radius: 20,),
-           label: '',
-            backgroundColor: Color(0xFF3C5BFA)
-          )
+        body: IndexedStack(
+          index: _currentIndex,
+          children: <Widget>[...screen],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          // type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                ),
+                label: 'Home',
+                backgroundColor: Color(0xFF3C5BFA)),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person_outline,
+                ),
+                label: 'Employees',
+                backgroundColor: Color(0xFF3C5BFA)),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.border_all_rounded),
+                label: 'Project',
+                backgroundColor: Color(0xFF3C5BFA)),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.assessment_outlined),
+                label: 'Report',
+                backgroundColor: Color(0xFF3C5BFA)),
+            BottomNavigationBarItem(
+                icon: CircleAvatar(
+                  foregroundColor: Color(0xFF3C5BFA),
+                  backgroundImage: NetworkImage(
+                    'https://picsum.photos/250?image=9',
+                  ),
+                  radius: 20,
+                ),
+                label: '',
+                backgroundColor: Color(0xFF3C5BFA))
           ],
           onTap: (index) {
-           setState((){
-            _currentIndex=index;
-           });
-          },)
-    );
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+        ));
   }
 }
-

@@ -3,9 +3,10 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:maanage/Login/otp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:maanage/custom%20widgets/Custom_text.dart';
 
 class Login extends StatefulWidget {
-  static String verify='';
+  static String verify = '';
   const Login({super.key});
 
   @override
@@ -21,7 +22,8 @@ class _LoginAppBarState extends State<Login> {
   }
 
   TextEditingController countrycode = TextEditingController();
-  var phone='';
+  bool isLoading = false;
+  var phone = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +38,7 @@ class _LoginAppBarState extends State<Login> {
               width: MediaQuery.of(context).size.width * 0.05,
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom:45.0),
+              padding: const EdgeInsets.only(bottom: 45.0),
               child: const Text("MAANAGE",
                   textScaleFactor: 1.5,
                   style: TextStyle(fontFamily: "Montserrat")),
@@ -72,7 +74,10 @@ class _LoginAppBarState extends State<Login> {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.width * 0.5,
-                  child: Image.asset('assets/images/maanageasbg.png',opacity: AlwaysStoppedAnimation(.5),),
+                  child: Image.asset(
+                    'assets/images/maanageasbg.png',
+                    opacity: AlwaysStoppedAnimation(.5),
+                  ),
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -84,18 +89,19 @@ class _LoginAppBarState extends State<Login> {
                     ),
                     //country code
                     SizedBox(
-                      
                         width: MediaQuery.of(context).size.width * 0.2,
                         child: TextFormField(
                           style: TextStyle(
-                          color: Color(0xFF3C5BFA),
-                          fontFamily: "Montserrat",
-                          fontWeight: FontWeight.w500),
+                              color: Color(0xFF3C5BFA),
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w500),
                           keyboardType: TextInputType.phone,
                           controller: countrycode,
-                          decoration: InputDecoration(border: InputBorder.none,
-                          filled: true,
-                        fillColor: Color(0xFFF4F4F4),),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Color(0xFFF4F4F4),
+                          ),
                         )),
                     // bich mae gap kae liyae
                     Text(
@@ -105,16 +111,18 @@ class _LoginAppBarState extends State<Login> {
                     //phone no kae liyae
                     Expanded(
                         child: TextFormField(
-                            onChanged: (value) {
-                              phone=value;
-                            },
-                          style: TextStyle(
+                      // maxLength: 10,
+                      onChanged: (value) {
+                        phone = value;
+                      },
+                      style: TextStyle(
                           color: Color(0xFF3C5BFA),
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.w500),
                       keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value!.isEmpty ||
+                            value.length < 10 ||
                             !RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
                                 .hasMatch(value)) {
                           //  r'^[0-9]{10}$' pattern plain match number with length 10
@@ -140,15 +148,28 @@ class _LoginAppBarState extends State<Login> {
                   height: MediaQuery.of(context).size.height * 0.08,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: ElevatedButton(
-                    onPressed: () async { await FirebaseAuth.instance.verifyPhoneNumber(
-  phoneNumber: '${countrycode.text+phone}',
-  verificationCompleted: (PhoneAuthCredential credential) {},
-  verificationFailed: (FirebaseAuthException e) {},
-  codeSent: (String verificationId, int? resendToken) {Login.verify=verificationId;
-    Navigator.push(context, MaterialPageRoute(builder: (context) => OtpPage() ));},
-  codeAutoRetrievalTimeout: (String verificationId) {},
-);
-                       
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await FirebaseAuth.instance.verifyPhoneNumber(
+                        phoneNumber: '${countrycode.text + phone}',
+                        verificationCompleted:
+                            (PhoneAuthCredential credential) {},
+                        verificationFailed: (FirebaseAuthException e) {},
+                        codeSent: (String verificationId, int? resendToken) {
+                          Login.verify = verificationId;
+                          isLoading = false;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OtpPage()));
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        codeAutoRetrievalTimeout: (String verificationId) {},
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF3C5BFA),
@@ -156,17 +177,39 @@ class _LoginAppBarState extends State<Login> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    
-                    child: Text(
-                      "CONTINUE ",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontFamily: "Montserrat"),
-                    ),
+                    child: isLoading
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 20,
+                              ),
+                              CustomText(
+                                text: 'Loading',
+                                textcolor: Colors.white,
+                                fontSize: 24,
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                width:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          )
+                        : Text(
+                            "CONTINUE ",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontFamily: "Montserrat"),
+                          ),
                   ),
                 ),
-                
               ],
             ),
           ),

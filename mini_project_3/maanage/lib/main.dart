@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         'addproject': (context) => AddProject(),
         'project': (context) => ProjectPage(),
       },
-      initialRoute: 'companyinfo',
+      initialRoute: 'login',
       // home:  Login(),
     );
   }

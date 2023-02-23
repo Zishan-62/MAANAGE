@@ -15,19 +15,20 @@ class OtpPage extends StatefulWidget {
 }
 
 class _OtpPageState extends State<OtpPage> {
+  bool isLoading=false;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final defaultPinTheme = PinTheme(
-    width: 56,
-    height: 56,
-    textStyle: TextStyle(
-        fontSize: 20,
-        color: Color.fromRGBO(30, 60, 87, 1),
-        fontWeight: FontWeight.w600),
-    decoration: BoxDecoration(
-      border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
-      borderRadius: BorderRadius.circular(20),
-    ),
-  );
+  // final defaultPinTheme = PinTheme(
+  //   width: 56,
+  //   height: 56,
+  //   textStyle: TextStyle(
+  //       fontSize: 20,
+  //       color: Color.fromRGBO(30, 60, 87, 1),
+  //       fontWeight: FontWeight.w600),
+  //   decoration: BoxDecoration(
+  //     border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+  //     borderRadius: BorderRadius.circular(20),
+  //   ),
+  // );
 
   var code = '';
   @override
@@ -97,6 +98,7 @@ class _OtpPageState extends State<OtpPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       try {
+
                         PhoneAuthCredential credential =
                             PhoneAuthProvider.credential(
                                 verificationId: Login.verify, smsCode: code);

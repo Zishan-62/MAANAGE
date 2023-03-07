@@ -78,7 +78,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                 ),
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.43,
+                                      MediaQuery.of(context).size.width * 0.4,
                                 ),
                                 IconButton(
                                   onPressed: () {},
@@ -88,7 +88,7 @@ class _ProjectPageState extends State<ProjectPage> {
                               ],
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.width * 0.05,
+                              height: MediaQuery.of(context).size.height * 0.03,
                             ),
                             Row(
                               children: [
@@ -96,7 +96,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                 hello(),
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.15,
+                                      MediaQuery.of(context).size.width * 0.1,
                                 ),
                                 InkWell(
                                   onTap: () {},
@@ -108,7 +108,9 @@ class _ProjectPageState extends State<ProjectPage> {
                                       Image.asset("assets/images/massage.png"),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pushNamed(context, "viewproject");
+                                  },
                                   child: Image.asset("assets/images/done.png"),
                                 )
                               ],
@@ -123,11 +125,18 @@ class _ProjectPageState extends State<ProjectPage> {
             )
         ],
       ),
-      floatingActionButton:  FloatingActionButton(backgroundColor: Color(0xFF3C5BFA),onPressed: () {
-                Navigator.pushNamed(context, 'addproject');   
-                },child: Icon(Icons.add,),),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF3C5BFA),
+        onPressed: () {
+          Navigator.pushNamed(context, 'addproject');
+        },
+        child: Icon(
+          Icons.add,
+        ),
+      ),
     );
   }
+
 //stack hai
   // Widget _buildStack() {
   //   return Stack(
@@ -166,22 +175,26 @@ class _ProjectPageState extends State<ProjectPage> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const CircleAvatar(backgroundColor: Colors.white,
-          backgroundImage: AssetImage('assets/images/done.png',),
+        const CircleAvatar(
+          backgroundColor: Colors.white,
+          backgroundImage: AssetImage(
+            'assets/images/done.png',
+          ),
           radius: 20,
         ),
         Align(
           alignment: Alignment.topLeft,
-          child: CircleAvatar(backgroundColor: Colors.white,
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
             backgroundImage: AssetImage('assets/images/done.png'),
             radius: 20,
           ),
         ),
-        CircleAvatar(backgroundColor: Colors.white,
+        CircleAvatar(
+          backgroundColor: Colors.white,
           backgroundImage: AssetImage('assets/images/done.png'),
           radius: 20,
         ),
-        
       ],
     );
   }

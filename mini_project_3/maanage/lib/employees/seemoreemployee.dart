@@ -83,16 +83,14 @@ class _MoreEmployeeState extends State<MoreEmployee> {
                                   CircleAvatar(
                                       backgroundColor: Colors.white,
                                       radius: 40,
-                                      child: ClipOval(
-                                        child: Material(
-                                            color: Colors.transparent,
-                                            child: Ink.image(
-                                              image: AssetImage(image[i]),
-                                              // NetworkImage(
-                                              //     'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
-                                              fit: BoxFit.cover,
-                                            )),
-                                      )),
+                                      child: CircleAvatar(
+                                          radius: 35,
+                                          backgroundImage: AssetImage(image[i])
+                                          // Image.asset(
+                                          //   image[i],
+                                          //   color: Colors.black,
+                                          // ),
+                                          )),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.02,

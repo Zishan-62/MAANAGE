@@ -80,17 +80,17 @@ class _MoreEmployeeState extends State<MoreEmployee> {
                               ),
                               child: Column(
                                 children: [
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      radius: 40,
-                                      child: CircleAvatar(
-                                          radius: 35,
-                                          backgroundImage: AssetImage(image[i])
-                                          // Image.asset(
-                                          //   image[i],
-                                          //   color: Colors.black,
-                                          // ),
-                                          )),
+                                      radius: 35,
+                                      backgroundImage: AssetImage(image[i])
+                                      // Image.asset(
+                                      //   image[i],
+                                      //   color: Colors.black,
+                                      // ),
+                                      ),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.02,

@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:maanage/Login/otp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:maanage/custom%20widgets/Custom_text.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   static String verify = '';
@@ -24,6 +28,79 @@ class _LoginAppBarState extends State<Login> {
   TextEditingController countrycode = TextEditingController();
   bool isLoading = false;
   var phone = '';
+  Future login() async {
+    var headers = {
+      'x-api-key': 'taibah123456',
+      'Cookie': 'ci_session=b7168d388478fd9c66906f30c7bd2295da3ec528'
+    };
+    var request =  http.MultipartRequest('POST',
+        Uri.parse('https://softdigit.in/softdigits/api/Login/no_login'));
+    request.fields.addAll({'mobile_no': '${countrycode.text + phone}'});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+ var data2 ;
+      var data=await response.stream.bytesToString();
+      data2=await json.decode(data);
+    if (response.statusCode == 200) {
+      // print(await response.stream.bytesToString());
+     
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: '${countrycode.text + phone}',
+        verificationCompleted: (PhoneAuthCredential credential) {
+          setState(() {
+            isLoading = false;
+          });
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          const snackdemo = SnackBar(
+            content: Text(
+              'Verification failed please try later',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+            ),
+            backgroundColor: Color.fromARGB(255, 237, 237, 237),
+            elevation: 10,
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.all(5),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+          setState(() {
+            isLoading = false;
+          });
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          Login.verify = verificationId;
+          isLoading = false;
+          sharedprf(data2);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => OtpPage()));
+          setState(() {
+            isLoading = false;
+          });
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+    } else {
+      print(response.reasonPhrase);
+      const snackdemo = SnackBar(
+        content: Text(
+          'User is not registered please contact Admin',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: Color.fromARGB(255, 237, 237, 237),
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.all(5),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,24 +229,46 @@ class _LoginAppBarState extends State<Login> {
                       setState(() {
                         isLoading = true;
                       });
-                      await FirebaseAuth.instance.verifyPhoneNumber(
-                        phoneNumber: '${countrycode.text + phone}',
-                        verificationCompleted:
-                            (PhoneAuthCredential credential) {},
-                        verificationFailed: (FirebaseAuthException e) {},
-                        codeSent: (String verificationId, int? resendToken) {
-                          Login.verify = verificationId;
-                          isLoading = false;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OtpPage()));
-                          setState(() {
-                            isLoading = false;
-                          });
-                        },
-                        codeAutoRetrievalTimeout: (String verificationId) {},
-                      );
+                      // await FirebaseAuth.instance.verifyPhoneNumber(
+                      //   phoneNumber: '${countrycode.text + phone}',
+                      //   verificationCompleted:
+                      //       (PhoneAuthCredential credential) {
+                      //     setState(() {
+                      //       isLoading = false;
+                      //     });
+                      //   },
+                      //   verificationFailed: (FirebaseAuthException e) {
+                      //     const snackdemo = SnackBar(
+                      //       content: Text(
+                      //         'Verification failed please try later',
+                      //         style: TextStyle(
+                      //             color: Colors.black,
+                      //             fontWeight: FontWeight.w600),
+                      //       ),
+                      //       backgroundColor: Color.fromARGB(255, 237, 237, 237),
+                      //       elevation: 10,
+                      //       behavior: SnackBarBehavior.floating,
+                      //       margin: EdgeInsets.all(5),
+                      //     );
+                      //     ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+                      //     setState(() {
+                      //       isLoading = false;
+                      //     });
+                      //   },
+                      //   codeSent: (String verificationId, int? resendToken) {
+                      //     Login.verify = verificationId;
+                      //     isLoading = false;
+                      //     Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => OtpPage()));
+                      //     setState(() {
+                      //       isLoading = false;
+                      //     });
+                      //   },
+                      //   codeAutoRetrievalTimeout: (String verificationId) {},
+                      // );
+                      login();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF3C5BFA),
@@ -216,5 +315,13 @@ class _LoginAppBarState extends State<Login> {
         ),
       ),
     );
+  }
+  sharedprf(details)async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    await pref.setString('fname', details['data']['first_name']);
+    await pref.setString('lname', details['data']['last_name']);
+    await pref.setString('email', details['data']['email']);
+    await pref.setString('phone', details['data']['phone']);
+
   }
 }

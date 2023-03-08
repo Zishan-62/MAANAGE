@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:maanage/Login/login.dart';
+import 'package:maanage/Login/splashScreen.dart';
 import 'package:maanage/Project.dart';
 import 'package:maanage/Project/viewProject.dart';
 import 'package:maanage/Report.dart';
@@ -50,8 +51,9 @@ class MyApp extends StatelessWidget {
         'moreemployee': (context) => MoreEmployee(),
         "seemoreleader": (context) => SeeMoreLeader(),
         "viewproject": (context) => ViewProject(),
+        'splashScreen': (context) => Splash()
       },
-      initialRoute: 'login',
+      initialRoute: 'splashScreen',
       // home:  Login(),
     );
   }

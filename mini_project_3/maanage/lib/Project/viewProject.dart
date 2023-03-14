@@ -544,7 +544,7 @@ class _ViewProjectState extends State<ViewProject> {
                 ),
 
                 //DATE visibilty
-                //
+
                 Visibility(
                   visible: datevisible,
                   child: Row(
@@ -890,7 +890,8 @@ class _ViewProjectState extends State<ViewProject> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListView.builder(
-                        itemBuilder: (BuildContext context, int INDEX) {
+                        itemCount: 10,
+                        itemBuilder: (context, INDEX) {
                           return new Card(
                             child: const ListTile(
                               leading: const Icon(Icons.album),

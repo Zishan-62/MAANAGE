@@ -51,7 +51,8 @@ class MyApp extends StatelessWidget {
         'moreemployee': (context) => MoreEmployee(),
         "seemoreleader": (context) => SeeMoreLeader(),
         "viewproject": (context) => ViewProject(),
-        'splashScreen': (context) => Splash()
+        'splashScreen': (context) => Splash(),
+        'profile': (context) => Profile(),
       },
       initialRoute: 'splashScreen',
       // home:  Login(),

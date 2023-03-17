@@ -3,19 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:maanage/Login/CompanyReg.dart';
+import 'package:maanage/global.dart';
 import 'package:pinput/pinput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({super.key});
+  var phoneno;
+  var data;
 
+  OtpPage({super.key, @required this.data, @required this.phoneno});
+// Map data
   @override
   State<OtpPage> createState() => _OtpPageState();
 }
 
 class _OtpPageState extends State<OtpPage> {
-  bool isLoading=false;
+  bool isLoading = false;
   final FirebaseAuth auth = FirebaseAuth.instance;
   // final defaultPinTheme = PinTheme(
   //   width: 56,
@@ -68,7 +73,7 @@ class _OtpPageState extends State<OtpPage> {
                         fontFamily: "Montserrat.bold",
                         fontWeight: FontWeight.w500)),
                 Text(
-                  " OTP has been sent to +91**********",
+                  "OTP Sent to ${widget.phoneno.substring(0, 3)} xxxxx xx${widget.phoneno.substring(10, 13)}",
                   textScaleFactor: 2,
                   style: TextStyle(
                     fontSize: 7,
@@ -78,7 +83,10 @@ class _OtpPageState extends State<OtpPage> {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.width * 0.5,
-                  child: Image.asset('assets/images/maanageasbg.png',opacity: AlwaysStoppedAnimation(.5),),
+                  child: Image.asset(
+                    'assets/images/maanageasbg.png',
+                    opacity: AlwaysStoppedAnimation(.5),
+                  ),
                 ),
                 Pinput(
                   length: 6,
@@ -90,7 +98,6 @@ class _OtpPageState extends State<OtpPage> {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.width * 0.32,
-
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.08,
@@ -98,14 +105,14 @@ class _OtpPageState extends State<OtpPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       try {
-
                         PhoneAuthCredential credential =
                             PhoneAuthProvider.credential(
                                 verificationId: Login.verify, smsCode: code);
 
                         // Sign the user in (or link) with the credential
                         await auth.signInWithCredential(credential);
-
+                        sharedprf(widget.data);
+                        first_name = widget.data['data']['first_name'];
                         // Navigator.pushNamed(context, 'login')
                         Navigator.pushNamedAndRemoveUntil(
                             context, 'companyinfo', (route) => false);
@@ -147,5 +154,13 @@ class _OtpPageState extends State<OtpPage> {
         ),
       ),
     );
+  }
+
+  sharedprf(details) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString('fname', details['data']['first_name']);
+    await pref.setString('lname', details['data']['last_name']);
+    await pref.setString('email', details['data']['email']);
+    await pref.setString('phone', details['data']['phone']);
   }
 }

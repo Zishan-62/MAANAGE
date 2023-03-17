@@ -73,9 +73,9 @@ class _LoginAppBarState extends State<Login> {
         codeSent: (String verificationId, int? resendToken) {
           Login.verify = verificationId;
           isLoading = false;
-          sharedprf(data2);
+          // sharedprf(data2);
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => OtpPage()));
+              context, MaterialPageRoute(builder: (context) => OtpPage(data: data2,phoneno:'${countrycode.text + phone}',)));
           setState(() {
             isLoading = false;
           });
@@ -316,12 +316,12 @@ class _LoginAppBarState extends State<Login> {
       ),
     );
   }
-  sharedprf(details)async{
-    SharedPreferences pref=await SharedPreferences.getInstance();
-    await pref.setString('fname', details['data']['first_name']);
-    await pref.setString('lname', details['data']['last_name']);
-    await pref.setString('email', details['data']['email']);
-    await pref.setString('phone', details['data']['phone']);
+  // sharedprf(details)async{
+  //   SharedPreferences pref=await SharedPreferences.getInstance();
+  //   await pref.setString('fname', details['data']['first_name']);
+  //   await pref.setString('lname', details['data']['last_name']);
+  //   await pref.setString('email', details['data']['email']);
+  //   await pref.setString('phone', details['data']['phone']);
 
-  }
+  // }
 }

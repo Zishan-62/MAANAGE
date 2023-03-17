@@ -16,6 +16,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import '../custom widgets/Custom_text.dart';
 import '../custom widgets/custom_container.dart';
 // import '../meeting/Addmeeting.dart';
+import '../global.dart';
 import '../meeting/Createmeeting.dart';
 import '../meeting/meeting.dart';
 
@@ -87,6 +88,7 @@ class _DashBoardState extends State<DashBoard> {
       setState(() {
         _currentPosition = position;
         isLocationClick = true;
+        print('${_currentPosition!.latitude} ${_currentPosition!.longitude}');
       });
       _getAddressFromLatLng(_currentPosition!);
     }).catchError((e) {
@@ -102,7 +104,7 @@ class _DashBoardState extends State<DashBoard> {
       setState(() {
         print(place);
         _currentAddress =
-            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+            '${place.name},${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.subThoroughfare},${place.locality} ,${place.postalCode}';
       });
     }).catchError((e) {
       debugPrint(e);
@@ -233,9 +235,9 @@ class _DashBoardState extends State<DashBoard> {
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.02,
                   bottom: MediaQuery.of(context).size.height * 0.02),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'Good Morning, Admin!',
+                  'Good Morning, ${first_name}!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontWeight: FontWeight.w500, fontFamily: 'Poppins'),

@@ -6,10 +6,12 @@ import 'dart:developer';
 // import 'package:ashu_admin/notification/notification_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:maanage/dashboard/dashboard.dart';
+import 'package:maanage/global.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
 import 'login.dart';
 
 class Splash extends StatefulWidget {
@@ -23,6 +25,7 @@ class _SplashState extends State<Splash> {
   void _navigatetohome() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? a = pref.getString('fname');
+    first_name = pref.getString('fname');
     String? b = pref.getString('lname');
     String? c = pref.getString('phone');
     String? d = pref.getString('email');
@@ -64,13 +67,13 @@ class _SplashState extends State<Splash> {
     // });
     if (a != null) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => DashBoard()));
+          context, MaterialPageRoute(builder: (context) => MaterialMain()));
     } else {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Login()));
     }
   }
-  
+
   @override
   void initState() {
     super.initState();

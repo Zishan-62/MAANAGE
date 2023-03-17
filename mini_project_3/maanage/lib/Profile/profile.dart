@@ -111,17 +111,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height * 0.009),
                         child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: MediaQuery.of(context).size.height * 0.07,
-                            child: ClipOval(
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: Ink.image(
-                                    image:
-                                        AssetImage("assets/images/maanage.png"),
-                                    fit: BoxFit.cover,
-                                  )),
-                            )),
+                          backgroundImage: AssetImage(
+                            'assets/images/Umar.jpeg',
+                          ),
+                          // foregroundColor: Colors.grey,
+                          backgroundColor: Colors.grey,
+                          radius: 60,
+                        ),
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,

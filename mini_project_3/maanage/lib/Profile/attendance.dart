@@ -107,35 +107,33 @@ class _AttendanceState extends State<Attendance> {
         ]),
         rowSpacer,
         TableRow(children: [
-          Flexible(
-            child: Container(
-              height: height * 0.055,
+          Container(
+            height: height * 0.055,
 
-              decoration: BoxDecoration(
-                // shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(20),
-                color: Color(0xfff4f4f4),
-              ),
-              child: Column(
-                children: [
-                  Align(
-                      alignment: Alignment.center,
-                      child: Text("17",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black))),
-                  Align(
-                      alignment: Alignment.center,
-                      child: Text("MON",
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black)))
-                ],
-              ),
-              // width: double.infinity,
+            decoration: BoxDecoration(
+              // shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(20),
+              color: Color(0xfff4f4f4),
             ),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.center,
+                    child: Text("17",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black))),
+                Align(
+                    alignment: Alignment.center,
+                    child: Text("MON",
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black)))
+              ],
+            ),
+            // width: double.infinity,
           ),
           Container(
             height: height * 0.055,

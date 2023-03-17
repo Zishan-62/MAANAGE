@@ -55,6 +55,7 @@ class _DashBoardState extends State<DashBoard> {
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    print("this is from location handler" + serviceEnabled.toString());
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
@@ -76,6 +77,7 @@ class _DashBoardState extends State<DashBoard> {
               'Location permissions are permanently denied, we cannot request permissions.')));
       return false;
     }
+    // _getCurrentPosition();
     return true;
   }
 
@@ -104,7 +106,7 @@ class _DashBoardState extends State<DashBoard> {
       setState(() {
         print(place);
         _currentAddress =
-            '${place.name},${place.street}, ${place.subLocality}, ${place.subAdministrativeArea},${place.subThoroughfare},${place.locality} ,${place.postalCode}';
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.subThoroughfare}, ${place.locality} ,${place.postalCode}';
       });
     }).catchError((e) {
       debugPrint(e);
@@ -114,6 +116,7 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     _getCurrentPosition();
+    // _handleLocationPermission();
     super.initState();
     _timer = Timer.periodic(
         const Duration(milliseconds: 1000), (timer) => _update());
@@ -194,6 +197,7 @@ class _DashBoardState extends State<DashBoard> {
           padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.075),
           child: InkWell(
             onTap: () {
+              _getCurrentPosition();
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(_currentAddress)));
             },

@@ -31,104 +31,111 @@ class _MyEmployeeState extends State<MyEmployee> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
-            height: height * 0.34,
-            // height: MediaQuery.of(context).size.height * 0.5,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Color.fromARGB(255, 241, 243, 246),
-            ),
-            child: Column(children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.012,
+      appBar: AppBar(backgroundColor: Colors.white),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+              height: height * 0.34,
+              // height: MediaQuery.of(context).size.height * 0.5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Color.fromARGB(255, 241, 243, 246),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    'Team Leader',
-                    style: TextStyle(
-                        fontFamily: "Montserrat", fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left,
-                  ),
-                  IconButton(
-                      color: Color(0xff3C5BFA),
-                      onPressed: () {
-                        Navigator.pushNamed(context, "seemoreleader");
-                      },
-                      icon: Icon(Icons.more))
-                ],
-              ),
-              Container(
-                height: height * 0.25,
-                child: GridView.count(
-                  physics: NeverScrollableScrollPhysics(),
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 20,
-                  crossAxisCount: 2,
+              child: Column(children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.012,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    for (var i = 0; i < 5; i++)
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 40,
-                                child: ClipOval(
-                                  child: Material(
-                                      color: Colors.transparent,
-                                      child: Ink.image(
-                                        image: AssetImage(image[i]),
-                                        // NetworkImage(
-                                        //     'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
-                                        fit: BoxFit.cover,
-                                      )),
-                                )),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                            Text(
-                              employee[i],
-                              style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 9, 9, 9),
-                              ),
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.01,
-                            ),
-                            Text(
-                              'Developer',
-                              style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF777777),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    Text(
+                      'Team Leader',
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.left,
+                    ),
+                    IconButton(
+                        color: Color(0xff3C5BFA),
+                        onPressed: () {
+                          Navigator.pushNamed(context, "seemoreleader");
+                        },
+                        icon: Icon(Icons.more))
                   ],
                 ),
-              ),
-            ]),
+                Container(
+                  height: height * 0.25,
+                  child: GridView.count(
+                    physics: NeverScrollableScrollPhysics(),
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 20,
+                    crossAxisCount: 2,
+                    children: [
+                      for (var i = 0; i < 5; i++)
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 40,
+                                  child: ClipOval(
+                                    child: Material(
+                                        color: Colors.transparent,
+                                        child: Ink.image(
+                                          image: AssetImage(image[i]),
+                                          // NetworkImage(
+                                          //     'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
+                                          fit: BoxFit.cover,
+                                        )),
+                                  )),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02,
+                              ),
+                              Text(
+                                employee[i],
+                                style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromARGB(255, 9, 9, 9),
+                                ),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              Text(
+                                'Developer',
+                                style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF777777),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ]),
+            ),
           ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.01,
-        ),
-        Employeess(context)
-      ]),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.01,
+          ),
+          Employeess(context)
+        ]),
+      ),
       floatingActionButton: FloatingActionButton(
+        heroTag: Null,
         backgroundColor: Color(0xFF3C5BFA),
         onPressed: () {
           Navigator.push(

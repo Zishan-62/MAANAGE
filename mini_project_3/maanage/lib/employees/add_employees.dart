@@ -598,7 +598,9 @@ class _EditProfileState extends State<AddEmployees> {
             height: MediaQuery.of(context).size.height * 0.08,
             width: MediaQuery.of(context).size.width * 0.45,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               style: ElevatedButton.styleFrom(
                 // padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
                 backgroundColor: Colors.white,

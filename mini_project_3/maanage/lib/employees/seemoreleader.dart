@@ -86,62 +86,61 @@ class _SeeMoreLeaderState extends State<SeeMoreLeader>
                   SizedBox(
                       height: MediaQuery.of(context).size.height * 0.84,
                       width: MediaQuery.of(context).size.width * 0.9,
-                      child: GridView.count(
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 20,
-                        crossAxisCount: 2,
-                        children: [
-                          for (var i = 0; i < 5; i++)
-                            Card(
+                      child: GridView.builder(
+                          // physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
+                          itemCount: 5,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(20.0),
                               ),
-                              child: Column(
-                                children: [
-                                  CircleAvatar(
+                              margin: EdgeInsets.all(5),
+                              semanticContainer: true,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
                                       backgroundColor: Colors.white,
                                       radius: 40,
-                                      child: ClipOval(
-                                        child: Material(
-                                            color: Colors.transparent,
-                                            child: Ink.image(
-                                              image: AssetImage(image[i]),
-                                              // NetworkImage(
-                                              //     'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
-                                              fit: BoxFit.cover,
-                                            )),
-                                      )),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.02,
-                                  ),
-                                  Text(
-                                    employee[i],
-                                    style: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromARGB(255, 9, 9, 9),
+                                      backgroundImage: AssetImage(image[index]),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.01,
-                                  ),
-                                  Text(
-                                    'Developer',
-                                    style: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFF777777),
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.02,
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      employee[index],
+                                      style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromARGB(255, 9, 9, 9),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.01,
+                                    ),
+                                    Text(
+                                      'Developer',
+                                      style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xFF777777),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                        ],
-                      )),
+                            );
+                          })),
                 ]),
               ),
             ],

@@ -48,7 +48,7 @@ class _MyEmployeeState extends State<MyEmployee> {
                   height: MediaQuery.of(context).size.height * 0.012,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
                       'Team Leader',
@@ -66,65 +66,117 @@ class _MyEmployeeState extends State<MyEmployee> {
                   ],
                 ),
                 Container(
-                  height: height * 0.25,
-                  child: GridView.count(
-                    physics: NeverScrollableScrollPhysics(),
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 20,
-                    crossAxisCount: 2,
-                    children: [
-                      for (var i = 0; i < 5; i++)
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 40,
-                                  child: ClipOval(
-                                    child: Material(
-                                        color: Colors.transparent,
-                                        child: Ink.image(
-                                          image: AssetImage(image[i]),
-                                          // NetworkImage(
-                                          //     'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
-                                          fit: BoxFit.cover,
-                                        )),
-                                  )),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.02,
+                    height: height * 0.25,
+                    child: GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2),
+                        itemCount: 2,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            margin: EdgeInsets.all(10),
+                            semanticContainer: true,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 40,
+                                    backgroundImage: AssetImage(image[index]),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.02,
+                                  ),
+                                  Text(
+                                    employee[index],
+                                    style: TextStyle(
+                                      fontFamily: "Montserrat",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color.fromARGB(255, 9, 9, 9),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.01,
+                                  ),
+                                  Text(
+                                    'Developer',
+                                    style: TextStyle(
+                                      fontFamily: "Montserrat",
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF777777),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                employee[i],
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(255, 9, 9, 9),
-                                ),
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01,
-                              ),
-                              Text(
-                                'Developer',
-                                style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF777777),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+                            ),
+                          );
+                          // child: GridView.count(
+                          //   physics: NeverScrollableScrollPhysics(),
+                          //   mainAxisSpacing: 10,
+                          //   crossAxisSpacing: 20,
+                          //   crossAxisCount: 2,
+                          //   children: [
+                          //     for (var i = 0; i < 5; i++)
+                          //       Card(
+                          //         shape: RoundedRectangleBorder(
+                          //           borderRadius: BorderRadius.circular(20),
+                          //         ),
+                          //         child: Column(
+                          //           children: [
+                          //             CircleAvatar(
+                          //                 backgroundColor: Colors.white,
+                          //                 radius: 40,
+                          //                 child: ClipOval(
+                          //                   child: Material(
+                          //                       color: Colors.transparent,
+                          //                       child: Ink.image(
+                          //                         image: AssetImage(image[i]),
+                          //                         // NetworkImage(
+                          //                         //     'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
+                          //                         fit: BoxFit.cover,
+                          //                       )),
+                          //                 )),
+                          //             SizedBox(
+                          //               height:
+                          //                   MediaQuery.of(context).size.height * 0.02,
+                          //             ),
+                          //             Text(
+                          //               employee[i],
+                          //               style: TextStyle(
+                          //                 fontFamily: "Montserrat",
+                          //                 fontSize: 14,
+                          //                 fontWeight: FontWeight.w500,
+                          //                 color: Color.fromARGB(255, 9, 9, 9),
+                          //               ),
+                          //             ),
+                          //             SizedBox(
+                          //               height:
+                          //                   MediaQuery.of(context).size.height * 0.01,
+                          //             ),
+                          //             Text(
+                          //               'Developer',
+                          //               style: TextStyle(
+                          //                 fontFamily: "Montserrat",
+                          //                 fontSize: 10,
+                          //                 fontWeight: FontWeight.w500,
+                          //                 color: Color(0xFF777777),
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //   ],
+                          // ),
+                        })),
               ]),
             ),
           ),
@@ -181,245 +233,115 @@ Widget Employeess(context) {
       //   height: MediaQuery.of(context).size.height * 0.01,
       // ),
       Container(
-        height: height * 0.45,
-        child: GridView.count(
-          physics: NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 5,
-          crossAxisSpacing: 5,
-          crossAxisCount: 2,
-          children: [
-            for (var j = 0; j < 4; j++)
-              Container(
-                width: 200,
-                height: 400,
-                child: Card(
+          height: height * 0.5,
+          margin: EdgeInsets.all(9),
+          child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
+              itemCount: 4,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                  child: Column(
-                    children: [
-                      CircleAvatar(
+                  margin: EdgeInsets.all(10),
+                  semanticContainer: true,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        CircleAvatar(
                           backgroundColor: Colors.white,
                           radius: 40,
-                          child: ClipOval(
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Ink.image(
-                                  image: AssetImage(image[j]),
-                                  fit: BoxFit.cover,
-                                )),
-                          )),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.01,
-                      ),
-                      Text(
-                        employee[j],
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color.fromARGB(255, 9, 9, 9),
+                          backgroundImage: AssetImage(image[index]),
                         ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.01,
-                      ),
-                      Text(
-                        'Developer',
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF777777),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
                         ),
-                      ),
-                    ],
+                        Text(
+                          employee[index],
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(255, 9, 9, 9),
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01,
+                        ),
+                        Text(
+                          'Developer',
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF777777),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-            // Card(
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(30),
-            //   ),
-            //   child: Column(
-            //     children: [
-            //       CircleAvatar(
-            //           backgroundColor: Colors.white,
-            //           radius: 40,
-            //           child: ClipOval(
-            //             child: Material(
-            //                 color: Colors.transparent,
-            //                 child: Ink.image(
-            //                   image: NetworkImage(
-            //                       'https://cdn.pixabay.com/photo/2015/11/16/16/28/bird-1045954_960_720.jpg'),
-            //                   fit: BoxFit.cover,
-            //                 )),
-            //           )),
-            //       SizedBox(
-            //         height: MediaQuery.of(context).size.height * 0.02,
-            //       ),
-            //       Text(
-            //         'SORATHIYA ZISHAN',
-            //         style: TextStyle(
-            //           fontFamily: "Montserrat",
-            //           fontSize: 14,
-            //           fontWeight: FontWeight.w500,
-            //           color: Colors.black,
-            //         ),
-            //       ),
-            //       SizedBox(
-            //         height: MediaQuery.of(context).size.height * 0.01,
-            //       ),
-            //       Text(
-            //         'MAKER',
-            //         style: TextStyle(
-            //           fontFamily: "Montserrat",
-            //           fontSize: 10,
-            //           fontWeight: FontWeight.w500,
-            //           color: Color(0xFF777777),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Card(
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(30),
-            //   ),
-            //   child: Column(
-            //     children: [
-            //       CircleAvatar(
-            //           backgroundColor: Colors.white,
-            //           radius: 40,
-            //           child: ClipOval(
-            //             child: Material(
-            //                 color: Colors.transparent,
-            //                 child: Ink.image(
-            //                   image: NetworkImage(
-            //                       'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
-            //                   fit: BoxFit.cover,
-            //                 )),
-            //           )),
-            //       SizedBox(
-            //         height: MediaQuery.of(context).size.height * 0.02,
-            //       ),
-            //       Text(
-            //         'UMAR SIDDIQUE',
-            //         style: TextStyle(
-            //           fontFamily: "Montserrat",
-            //           fontSize: 14,
-            //           fontWeight: FontWeight.w500,
-            //           color: Color.fromARGB(255, 9, 9, 9),
-            //         ),
-            //       ),
-            //       SizedBox(
-            //         height: MediaQuery.of(context).size.height * 0.01,
-            //       ),
-            //       Text(
-            //         'MAKER',
-            //         style: TextStyle(
-            //           fontFamily: "Montserrat",
-            //           fontSize: 10,
-            //           fontWeight: FontWeight.w500,
-            //           color: Color(0xFF777777),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Card(
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(30),
-            //   ),
-            //   child: Column(
-            //     children: [
-            //       CircleAvatar(
-            //           backgroundColor: Colors.white,
-            //           radius: 40,
-            //           child: ClipOval(
-            //             child: Material(
-            //                 color: Colors.transparent,
-            //                 child: Ink.image(
-            //                   image: NetworkImage(
-            //                       'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
-            //                   fit: BoxFit.cover,
-            //                 )),
-            //           )),
-            //       SizedBox(
-            //         height: MediaQuery.of(context).size.height * 0.02,
-            //       ),
-            //       Text(
-            //         'UMAR SIDDIQUE',
-            //         style: TextStyle(
-            //           fontFamily: "Montserrat",
-            //           fontSize: 14,
-            //           fontWeight: FontWeight.w500,
-            //           color: Color.fromARGB(255, 9, 9, 9),
-            //         ),
-            //       ),
-            //       SizedBox(
-            //         height: MediaQuery.of(context).size.height * 0.01,
-            //       ),
-            //       Text(
-            //         'MAKER',
-            //         style: TextStyle(
-            //           fontFamily: "Montserrat",
-            //           fontSize: 10,
-            //           fontWeight: FontWeight.w500,
-            //           color: Color(0xFF777777),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Card(
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(20),
-            //   ),
-            //   child: Column(
-            //     children: [
-            //       CircleAvatar(
-            //           backgroundColor: Colors.white,
-            //           radius: 40,
-            //           child: ClipOval(
-            //             child: Material(
-            //                 color: Colors.transparent,
-            //                 child: Ink.image(
-            //                   image: NetworkImage(
-            //                       'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
-            //                   fit: BoxFit.cover,
-            //                 )),
-            //           )),
-            //       SizedBox(
-            //         height: MediaQuery.of(context).size.height * 0.02,
-            //       ),
-            //       Text(
-            //         'UMAR SIDDIQUE',
-            //         style: TextStyle(
-            //           fontFamily: "Montserrat",
-            //           fontSize: 14,
-            //           fontWeight: FontWeight.w500,
-            //           color: Color.fromARGB(255, 9, 9, 9),
-            //         ),
-            //       ),
-            //       SizedBox(
-            //         height: MediaQuery.of(context).size.height * 0.01,
-            //       ),
-            //       Text(
-            //         'MAKER',
-            //         style: TextStyle(
-            //           fontFamily: "Montserrat",
-            //           fontSize: 10,
-            //           fontWeight: FontWeight.w500,
-            //           color: Color(0xFF777777),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-          ],
-        ),
-      ),
+                );
+                // child: GridView.count(
+                //   physics: NeverScrollableScrollPhysics(),
+                //   mainAxisSpacing: 10,
+                //   crossAxisSpacing: 20,
+                //   crossAxisCount: 2,
+                //   children: [
+                //     for (var i = 0; i < 5; i++)
+                //       Card(
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(20),
+                //         ),
+                //         child: Column(
+                //           children: [
+                //             CircleAvatar(
+                //                 backgroundColor: Colors.white,
+                //                 radius: 40,
+                //                 child: ClipOval(
+                //                   child: Material(
+                //                       color: Colors.transparent,
+                //                       child: Ink.image(
+                //                         image: AssetImage(image[i]),
+                //                         // NetworkImage(
+                //                         //     'https://cdn.pixabay.com/photo/2022/09/28/05/53/squirrel-7484292_960_720.jpg'),
+                //                         fit: BoxFit.cover,
+                //                       )),
+                //                 )),
+                //             SizedBox(
+                //               height:
+                //                   MediaQuery.of(context).size.height * 0.02,
+                //             ),
+                //             Text(
+                //               employee[i],
+                //               style: TextStyle(
+                //                 fontFamily: "Montserrat",
+                //                 fontSize: 14,
+                //                 fontWeight: FontWeight.w500,
+                //                 color: Color.fromARGB(255, 9, 9, 9),
+                //               ),
+                //             ),
+                //             SizedBox(
+                //               height:
+                //                   MediaQuery.of(context).size.height * 0.01,
+                //             ),
+                //             Text(
+                //               'Developer',
+                //               style: TextStyle(
+                //                 fontFamily: "Montserrat",
+                //                 fontSize: 10,
+                //                 fontWeight: FontWeight.w500,
+                //                 color: Color(0xFF777777),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //   ],
+                // ),
+              })),
     ]),
   );
 }

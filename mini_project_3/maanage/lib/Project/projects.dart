@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class ProjectPage extends StatefulWidget {
@@ -44,7 +46,11 @@ class _ProjectPageState extends State<ProjectPage> {
                 child: Column(
                   children: [
                     Align(
-                        alignment: Alignment.topLeft, child: Text("20/11/122")),
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "20/11/122",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
                     Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -56,9 +62,22 @@ class _ProjectPageState extends State<ProjectPage> {
                           children: [
                             Align(
                               alignment: Alignment.center,
-                              child: Text(
-                                "hello",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                  color: Color(0xffEA4335),
+                                ),
+                                child: Text(
+                                  "URGENT",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
                               ),
                             ),
                             Row(

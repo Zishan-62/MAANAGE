@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         'splashScreen': (context) => Splash(),
         'profile': (context) => Profile(),
       },
-      initialRoute: 'splashScreen',
+      initialRoute: 'companyinfo',
       // home:  Login(),
     );
   }
@@ -281,12 +281,12 @@ class _MaterialState extends State<MaterialMain> {
                   },
                   icon: _currentIndex == 1
                       ? const Icon(
-                          Icons.home,
+                          Icons.person_pin_rounded,
                           color: Colors.white,
                           size: 35,
                         )
                       : const Icon(
-                          Icons.home_outlined,
+                          Icons.people_outline_outlined,
                           color: Color(0xFF3C5BFA),
                           size: 35,
                         ),

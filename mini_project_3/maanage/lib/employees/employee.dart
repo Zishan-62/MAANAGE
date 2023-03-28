@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:maanage/custom%20widgets/Custom_text.dart';
 import 'package:maanage/employees/add_employees.dart';
 
 class MyEmployee extends StatefulWidget {
@@ -31,7 +32,16 @@ class _MyEmployeeState extends State<MyEmployee> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.white),
+      appBar: AppBar(
+        leading: Icon(
+          Icons.people_alt_outlined,
+          color: Colors.black,
+        ),
+        backgroundColor: Colors.white,
+        title: CustomText(
+          text: 'EMPLOYEES',
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(children: [
           Padding(

@@ -26,6 +26,7 @@ class _SplashState extends State<Splash> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? a = pref.getString('fname');
     first_name = pref.getString('fname');
+    appr_id = pref.getString('admin');
     String? b = pref.getString('lname');
     String? c = pref.getString('phone');
     String? d = pref.getString('email');

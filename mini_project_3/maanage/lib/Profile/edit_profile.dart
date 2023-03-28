@@ -30,53 +30,53 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   //  Fetching the details from backend
 
-  List<Employees> fetchEmployees = [];
-  bool isLoading = true;
-  void fetchData() async {
-    try {
-      http.Response? response = await http.get(Uri.parse(api));
-      var data = json.decode(response.body);
-      for (var employees in data) {
-        fetchEmployees.add(Employees(
-            empid: employees['empid'],
-            address: employees['address'],
-            ename: employees['ename'],
-            email: employees['eemail'],
-            econtact: employees['econtact'],
-            dob: employees['dob'],
-            gender: employees['gender'],
-            dateJoined: employees['date_joined'],
-            addr: employees['address.addr']));
-      }
-      var z = fetchEmployees[i].address?[0];
-      //  for(var valu in z.entries){
-      //   print(valu.key );
-      //   print(valu.value);
-      //  }
-      print(fetchEmployees[0].address?[0]['id']);
-      setState(() {
-        isLoading = false;
-      });
-      //  print(data.length);
-      print(fetchEmployees[i].empid.toString() + 'checking empid');
-    } catch (e) {
-      print('Error is $e');
-    }
-  }
+  // List<Employees> fetchEmployees = [];
+  // bool isLoading = true;
+  // void fetchData() async {
+  //   try {
+  //     http.Response? response = await http.get(Uri.parse(api));
+  //     var data = json.decode(response.body);
+  //     for (var employees in data) {
+  //       fetchEmployees.add(Employees(
+  //           empid: employees['empid'],
+  //           address: employees['address'],
+  //           ename: employees['ename'],
+  //           email: employees['eemail'],
+  //           econtact: employees['econtact'],
+  //           dob: employees['dob'],
+  //           gender: employees['gender'],
+  //           dateJoined: employees['date_joined'],
+  //           addr: employees['address.addr']));
+  //     }
+  //     var z = fetchEmployees[i].address?[0];
+  //     //  for(var valu in z.entries){
+  //     //   print(valu.key );
+  //     //   print(valu.value);
+  //     //  }
+  //     print(fetchEmployees[0].address?[0]['id']);
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //     //  print(data.length);
+  //     print(fetchEmployees[i].empid.toString() + 'checking empid');
+  //   } catch (e) {
+  //     print('Error is $e');
+  //   }
+  // }
 
-  // creating the delete function
-  void delete_employee(String id) async {
-    try {
-      http.Response? response = await http.delete(Uri.parse(api + '/' + id));
-      fetchData();
-    } catch (e) {
-      print(e);
-    }
-  }
+  // // creating the delete function
+  // void delete_employee(String id) async {
+  //   try {
+  //     http.Response? response = await http.delete(Uri.parse(api + '/' + id));
+  //     fetchData();
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
-  @override
+  // @override
   void initState() {
-    fetchData();
+    // fetchData();
     // TODO: implement initState
     super.initState();
   }
@@ -183,7 +183,7 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                     //NAME
                     TextFormField(
-                      initialValue: fetchEmployees[i].ename,
+                      // initialValue: fetchEmployees[i].ename,
                       style: TextStyle(
                           color: Color(0xFF3C5BFA),
                           fontFamily: "Montserrat",
@@ -225,7 +225,7 @@ class _EditProfileState extends State<EditProfile> {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     TextFormField(
-                      initialValue: fetchEmployees[i].econtact.toString(),
+                      // initialValue: fetchEmployees[i].econtact.toString(),
                       keyboardType: TextInputType.number,
                       style: TextStyle(
                           color: Color(0xFF3C5BFA),
@@ -271,7 +271,7 @@ class _EditProfileState extends State<EditProfile> {
                     ),
 
                     TextFormField(
-                      initialValue: fetchEmployees[i].email.toString(),
+                      // initialValue: fetchEmployees[i].email.toString(),
                       style: TextStyle(
                           color: Color(0xFF3C5BFA),
                           fontFamily: "Montserrat",
@@ -315,7 +315,7 @@ class _EditProfileState extends State<EditProfile> {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     TextFormField(
-                      initialValue: fetchEmployees[i].dob,
+                      // initialValue: fetchEmployees[i].dob,
                       // readOnly: true,
                       style: TextStyle(
                           color: Color(0xFF3C5BFA),
@@ -407,7 +407,7 @@ class _EditProfileState extends State<EditProfile> {
                     ),
 
                     TextFormField(
-                      initialValue: fetchEmployees[i].address?[0]['addr'],
+                      // initialValue: fetchEmployees[i].address?[0]['addr'],
                       maxLength: 50,
                       style: TextStyle(
                           color: Color(0xFF3C5BFA),
@@ -452,8 +452,8 @@ class _EditProfileState extends State<EditProfile> {
                                     MediaQuery.of(context).size.height * 0.01,
                               ),
                               TextFormField(
-                                initialValue: fetchEmployees[i].address?[0]
-                                    ['city'],
+                                // initialValue: fetchEmployees[i].address?[0]
+                                // ['city'],
                                 style: TextStyle(
                                     color: Color(0xFF3C5BFA),
                                     fontFamily: "Montserrat",
@@ -496,8 +496,8 @@ class _EditProfileState extends State<EditProfile> {
                                     MediaQuery.of(context).size.height * 0.01,
                               ),
                               TextFormField(
-                                initialValue: fetchEmployees[i].address?[0]
-                                    ['pincode'],
+                                // initialValue: fetchEmployees[i].address?[0]
+                                // ['pincode'],
                                 style: TextStyle(
                                     color: Color(0xFF3C5BFA),
                                     fontFamily: "Montserrat",
@@ -544,8 +544,8 @@ class _EditProfileState extends State<EditProfile> {
                                     MediaQuery.of(context).size.height * 0.01,
                               ),
                               TextFormField(
-                                initialValue: fetchEmployees[i].address?[0]
-                                    ['state'],
+                                // initialValue: fetchEmployees[i].address?[0]
+                                //     ['state'],
                                 style: TextStyle(
                                     color: Color(0xFF3C5BFA),
                                     fontFamily: "Montserrat",
@@ -587,8 +587,8 @@ class _EditProfileState extends State<EditProfile> {
                                     MediaQuery.of(context).size.height * 0.01,
                               ),
                               TextFormField(
-                                initialValue: fetchEmployees[i].address?[0]
-                                    ['country'],
+                                // initialValue: fetchEmployees[i].address?[0]
+                                //     ['country'],
                                 style: TextStyle(
                                     color: Color(0xFF3C5BFA),
                                     fontFamily: "Montserrat",
@@ -670,8 +670,8 @@ class _EditProfileState extends State<EditProfile> {
             height: MediaQuery.of(context).size.height * 0.08,
             width: MediaQuery.of(context).size.width * 0.45,
             child: ElevatedButton(
-              onPressed: () =>
-                  delete_employee(fetchEmployees[i].empid.toString()),
+              onPressed: () {},
+              // delete_employee(fetchEmployees[i].empid.toString()),
               style: ElevatedButton.styleFrom(
                 // padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
                 backgroundColor: Colors.white,

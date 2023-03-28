@@ -2,6 +2,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'package:maanage/global.dart';
+import 'package:async/async.dart';
+import 'package:path/path.dart';
+import 'dart:convert';
+// import 'package:path/path.dart';
+
+// import 'dart:convert';
+// import 'package:path/path.dart';
+
+// import 'dart:convert';
+// import 'package:path/path.dart';
 // import 'package:validators/validators.dart';
 // import 'package:intl/date_symbol_data_http_request.dart';
 
@@ -15,10 +27,15 @@ class AddEmployees extends StatefulWidget {
 class _EditProfileState extends State<AddEmployees> {
   // FOR date of birth
   TextEditingController _date = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController phoneno = TextEditingController();
+  TextEditingController email = TextEditingController();
   // FOR date of join
   TextEditingController _dateofjoin = TextEditingController();
   // FOR date of contract
   TextEditingController _dateofcontract = TextEditingController();
+  // TextEditingController role = TextEditingController();
+
   //for gender
   List<String> gender = ['Male', 'Female', 'Other'];
   String selectedgender = 'Male';
@@ -55,40 +72,214 @@ class _EditProfileState extends State<AddEmployees> {
     });
   }
 
+  register(File imageFile, context) async {
+    print(imageFile.path);
+//     var stream = http.ByteStream((imageFile.openRead()));
+//     stream.cast();
+//     var length = await imageFile.length();
+//     print(length);
+//     var headers = {
+//       'x-api-key': 'taibah123456',
+//       'Cookie': 'ci_session=826e73b4b9b81d73fafe20b2b865c27aeff40a5b'
+//     };
+//     var request = http.MultipartRequest(
+//         'POST',
+//         Uri.parse(
+//             'https://softdigit.in/softdigits/api/Authentication/registration'));
+//     request.fields.addAll({
+//       'email': email.text,
+//       // 'password': 'umar123',
+//       'first_name': name.text,
+//       // 'last_name': 'Siddiqu',
+//       'phone': phoneno.text,
+//       'gender': selectedgender,
+//       'role': selectedposition,
+//       'appr_id': appr_id,
+//       'address': 'Andheri'
+//     });
+// // request.files.add(await http.MultipartFile.fromPath('img', '/C:/Users/91770/Pictures/Screenshots/Screenshot (2).png'));
+// // request.headers.addAll(headers);
+//     var multipartFile = await http.MultipartFile('img', stream, length,
+//         filename: basename(imageFile.path));
+//     // print(stream.bytesToString());
+//     request.files.add(multipartFile);
+
+//     var response = await request.send();
+
+//     if (response.statusCode == 200) {
+//       print('successfull');
+//       // print(await response.stream.bytesToString());
+//     } else {
+//       // print(response.reasonPhrase);
+//       print('unsuccessfull');
+//     }
+    var stream =
+        new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+    var length = await imageFile.length();
+    var uri = Uri.parse(
+        "https://softdigit.in/softdigits/api/Authentication/registration");
+
+    var headers = {
+      'x-api-key': 'taibah123456',
+      'Cookie': 'ci_session=f9671b997826d6b0106c8e4d15d6ef9b240865e9'
+    };
+    var request = http.MultipartRequest("POST", uri);
+    request.fields.addAll({
+      'email': email.text,
+      'first_name': name.text,
+      'phone': phoneno.text,
+      'gender': selectedgender,
+      'role': selectedposition,
+      'appr_id': appr_id,
+      'address': 'Andheri'
+    });
+    request.files.add(http.MultipartFile('img', stream, length,
+        filename: basename(imageFile.path)));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var Mheight = MediaQuery.of(context).size.height;
+    var Mwidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                print(appr_id);
+              },
+              icon: Icon(
+                Icons.add,
+                color: Colors.black,
+              ))
+        ],
         // centerTitle: true,
         titleSpacing: 0,
         leading: Icon(
           Icons.account_circle_outlined,
           color: Colors.black,
-          size: MediaQuery.of(context).size.height * 0.05,
+          size: Mheight * 0.05,
         ),
         title: Text('ADD EMPLOYEES'),
 
         titleTextStyle: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.w600,
-          fontSize: MediaQuery.of(context).size.height * 0.025,
+          fontSize: Mheight * 0.025,
           fontFamily: 'Poppins',
         ),
         backgroundColor: Colors.white,
         shape: Border(
-            bottom: BorderSide(
-                color: Color(0xff3C5BFA),
-                width: MediaQuery.of(context).size.width * 0.005)),
+            bottom:
+                BorderSide(color: Color(0xff3C5BFA), width: Mwidth * 0.005)),
       ),
       body: Container(
-        padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height * 0.05,
-            left: MediaQuery.of(context).size.height * 0.01),
+        padding: EdgeInsets.only(top: Mheight * 0.05, left: Mheight * 0.01),
         child: ListView(
           children: [
-            imageprofile(),
+            // imageprofile(),
+            Center(
+              child: Stack(children: [
+                CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 60,
+                    child: ClipOval(
+                        child: Container(
+                      height: 120.0,
+                      width: 120.0,
+                      child: image == null
+                          ? Image.asset(
+                              'assets/images/profile.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.file(
+                              image!,
+                              fit: BoxFit.values[1],
+                            ),
+                    ))),
+                Positioned(
+                    bottom: 0,
+                    right: 5,
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(width: 2, color: Colors.blue)),
+                      child: InkWell(
+                          onTap: () => {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: ((builder) => Container(
+                                          height: 100.0,
+                                          width: Mwidth,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 20),
+                                          child: Column(children: [
+                                            Text(
+                                              "Choose Profile Photo",
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontFamily: "Montserrat"),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                TextButton.icon(
+                                                    onPressed: () {
+                                                      getimage();
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon: Icon(Icons.camera,
+                                                        color: Colors.blue),
+                                                    label: Text('Camera',
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontFamily:
+                                                                "Montserrat"))),
+                                                TextButton.icon(
+                                                    onPressed: () {
+                                                      getgallery();
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.image,
+                                                      color: Colors.blue,
+                                                    ),
+                                                    label: Text('Gallery',
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontFamily:
+                                                                "Montserrat")))
+                                              ],
+                                            )
+                                          ]),
+                                        )))
+                              },
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.blue,
+                          )),
+                    ))
+              ]),
+            ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
+              height: Mheight * 0.03,
             ),
             Text(
               'PERSONAL INFORMATION',
@@ -100,13 +291,12 @@ class _EditProfileState extends State<AddEmployees> {
                   letterSpacing: 0.8),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
+              height: Mheight * 0.01,
             ),
             SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.only(
-                    right: MediaQuery.of(context).size.height * 0.04,
-                    left: MediaQuery.of(context).size.height * 0.04),
+                    right: Mheight * 0.04, left: Mheight * 0.04),
                 child: Form(
                   key: formKey,
                   child: Column(children: [
@@ -121,10 +311,11 @@ class _EditProfileState extends State<AddEmployees> {
                         )),
 
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: Mheight * 0.02,
                     ),
                     //NAME
                     TextFormField(
+                      controller: name,
                       style: TextStyle(
                           color: Color(0xFF3C5BFA),
                           fontFamily: "Montserrat",
@@ -151,7 +342,7 @@ class _EditProfileState extends State<AddEmployees> {
                       },
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: Mheight * 0.02,
                     ),
                     Align(
                         alignment: Alignment.topLeft,
@@ -163,10 +354,11 @@ class _EditProfileState extends State<AddEmployees> {
                           textAlign: TextAlign.left,
                         )),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: Mheight * 0.01,
                     ),
                     TextFormField(
-                      keyboardType: TextInputType.number,
+                      controller: phoneno,
+                      keyboardType: TextInputType.phone,
                       style: TextStyle(
                           color: Color(0xFF3C5BFA),
                           fontFamily: "Montserrat",
@@ -195,7 +387,7 @@ class _EditProfileState extends State<AddEmployees> {
                       },
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: Mheight * 0.02,
                     ),
                     Align(
                         alignment: Alignment.topLeft,
@@ -207,10 +399,12 @@ class _EditProfileState extends State<AddEmployees> {
                           textAlign: TextAlign.left,
                         )),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: Mheight * 0.01,
                     ),
 
                     TextFormField(
+                      controller: email,
+                      keyboardType: TextInputType.emailAddress,
                       style: TextStyle(
                           color: Color(0xFF3C5BFA),
                           fontFamily: "Montserrat",
@@ -238,7 +432,7 @@ class _EditProfileState extends State<AddEmployees> {
                       },
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: Mheight * 0.02,
                     ),
 
                     Align(
@@ -251,7 +445,7 @@ class _EditProfileState extends State<AddEmployees> {
                           textAlign: TextAlign.left,
                         )),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: Mheight * 0.01,
                     ),
                     TextFormField(
                       readOnly: true,
@@ -277,8 +471,8 @@ class _EditProfileState extends State<AddEmployees> {
                         DateTime? pickeddate = await showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100));
+                            firstDate: DateTime(1980),
+                            lastDate: DateTime.now());
 
                         if (pickeddate != null) {
                           setState(() {
@@ -289,7 +483,7 @@ class _EditProfileState extends State<AddEmployees> {
                       },
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: Mheight * 0.02,
                     ),
                     Align(
                         alignment: Alignment.topLeft,
@@ -301,11 +495,11 @@ class _EditProfileState extends State<AddEmployees> {
                           textAlign: TextAlign.left,
                         )),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: Mheight * 0.01,
                     ),
                     // drop down for gender
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
+                      width: Mwidth * 0.8,
                       child: DropdownButtonFormField<String>(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -329,7 +523,7 @@ class _EditProfileState extends State<AddEmployees> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: Mheight * 0.02,
                     ),
                     Align(
                         alignment: Alignment.topLeft,
@@ -341,7 +535,7 @@ class _EditProfileState extends State<AddEmployees> {
                           textAlign: TextAlign.left,
                         )),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: Mheight * 0.01,
                     ),
 
                     TextFormField(
@@ -363,15 +557,15 @@ class _EditProfileState extends State<AddEmployees> {
                               borderSide: BorderSide(color: Colors.blue))),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: Mheight * 0.02,
                     ),
                     // CITY
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.37,
-                          height: MediaQuery.of(context).size.height * 0.2,
+                          width: Mwidth * 0.37,
+                          height: Mheight * 0.2,
                           child: Column(
                             children: [
                               Align(
@@ -384,8 +578,7 @@ class _EditProfileState extends State<AddEmployees> {
                                     textAlign: TextAlign.left,
                                   )),
                               SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01,
+                                height: Mheight * 0.01,
                               ),
                               TextFormField(
                                 style: TextStyle(
@@ -412,8 +605,8 @@ class _EditProfileState extends State<AddEmployees> {
                         ),
                         // pincode
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.37,
-                          height: MediaQuery.of(context).size.height * 0.2,
+                          width: Mwidth * 0.37,
+                          height: Mheight * 0.2,
                           child: Column(
                             children: [
                               Align(
@@ -426,8 +619,7 @@ class _EditProfileState extends State<AddEmployees> {
                                     textAlign: TextAlign.left,
                                   )),
                               SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01,
+                                height: Mheight * 0.01,
                               ),
                               TextFormField(
                                 style: TextStyle(
@@ -458,8 +650,8 @@ class _EditProfileState extends State<AddEmployees> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.37,
-                          height: MediaQuery.of(context).size.height * 0.2,
+                          width: Mwidth * 0.37,
+                          height: Mheight * 0.2,
                           child: Column(
                             children: [
                               Align(
@@ -472,8 +664,7 @@ class _EditProfileState extends State<AddEmployees> {
                                     textAlign: TextAlign.left,
                                   )),
                               SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01,
+                                height: Mheight * 0.01,
                               ),
                               TextFormField(
                                 style: TextStyle(
@@ -499,8 +690,8 @@ class _EditProfileState extends State<AddEmployees> {
                           ),
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.37,
-                          height: MediaQuery.of(context).size.height * 0.2,
+                          width: Mwidth * 0.37,
+                          height: Mheight * 0.2,
                           child: Column(
                             children: [
                               Align(
@@ -513,8 +704,7 @@ class _EditProfileState extends State<AddEmployees> {
                                     textAlign: TextAlign.left,
                                   )),
                               SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01,
+                                height: Mheight * 0.01,
                               ),
                               TextFormField(
                                 style: TextStyle(
@@ -542,7 +732,7 @@ class _EditProfileState extends State<AddEmployees> {
                       ],
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: Mheight * 0.01,
                     ),
                     Text(
                       'COMPANY INFORMATION',
@@ -554,9 +744,217 @@ class _EditProfileState extends State<AddEmployees> {
                           letterSpacing: 0.8),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      height: Mheight * 0.01,
                     ),
-                    CompanyInfo()
+                    // CompanyInfo()
+                    Column(children: [
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Select Branch',
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          )),
+                      SizedBox(
+                        height: Mheight * 0.01,
+                      ),
+                      SizedBox(
+                        height: Mheight * 0.09,
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(color: Colors.blue)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                )),
+                          ),
+                          value: selectedcompany,
+                          items: company
+                              .map((company) => DropdownMenuItem<String>(
+                                  value: company, child: Text(company)))
+                              .toList(),
+                          onChanged: (company) => setState(
+                            () => selectedcompany = company!,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: Mheight * 0.02,
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Designation',
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          )),
+                      SizedBox(height: Mheight * 0.01),
+                      TextFormField(
+                        style: TextStyle(
+                            color: Color(0xFF3C5BFA),
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.w500),
+                        decoration: InputDecoration(
+                            errorBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                )),
+                            // hintText: 'ADDRESS',
+                            hintStyle: TextStyle(fontFamily: "Montserrat"),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(color: Colors.blue))),
+                      ),
+                      SizedBox(
+                        height: Mheight * 0.02,
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Position (Prefrable)',
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          )),
+                      SizedBox(
+                        height: Mheight * 0.01,
+                      ),
+                      SizedBox(
+                        height: Mheight * 0.09,
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(color: Colors.blue)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                )),
+                          ),
+                          value: selectedposition,
+                          items: position
+                              .map((position) => DropdownMenuItem<String>(
+                                  value: position, child: Text(position)))
+                              .toList(),
+                          onChanged: (position) => setState(
+                            () => selectedposition = position!,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: Mheight * 0.02,
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Date Of Joining',
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          )),
+                      SizedBox(
+                        height: Mheight * 0.01,
+                      ),
+                      TextFormField(
+                        readOnly: true,
+                        style: TextStyle(
+                            color: Color(0xFF3C5BFA),
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.w500),
+                        controller: _dateofjoin,
+                        decoration: InputDecoration(
+                            hintText: 'Enter Date Of Joining',
+                            suffixIcon: Icon(Icons.calendar_today_rounded),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                )),
+                            hintStyle: TextStyle(fontFamily: "Montserrat"),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(color: Colors.blue))),
+                        onTap: () async {
+                          DateTime? pickedDOJdate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100));
+
+                          if (pickedDOJdate != null) {
+                            setState(() {
+                              _dateofjoin.text = DateFormat('dd-MM-yyyy')
+                                  .format(pickedDOJdate);
+                            });
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: Mheight * 0.02,
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'End of Contract',
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          )),
+                      SizedBox(
+                        height: Mheight * 0.01,
+                      ),
+                      TextFormField(
+                        readOnly: true,
+                        style: TextStyle(
+                            color: Color(0xFF3C5BFA),
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.w500),
+                        controller: _dateofcontract,
+                        decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.calendar_today_rounded),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                )),
+                            hintText: 'Enter End Contract Date',
+                            hintStyle: TextStyle(fontFamily: "Montserrat"),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(color: Colors.blue))),
+                        onTap: () async {
+                          DateTime? pickedEOCdate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100));
+
+                          if (pickedEOCdate != null) {
+                            setState(() {
+                              _dateofcontract.text = DateFormat('dd-MM-yyyy')
+                                  .format(pickedEOCdate);
+                            });
+                          }
+                        },
+                      ),
+                    ])
                   ]),
                 ),
               ),
@@ -567,13 +965,18 @@ class _EditProfileState extends State<AddEmployees> {
       persistentFooterButtons: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.08,
-            width: MediaQuery.of(context).size.width * 0.45,
+            height: Mheight * 0.08,
+            width: Mwidth * 0.45,
             child: ElevatedButton(
               onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  return print('object');
-                }
+                setState(() {
+                  print(selectedgender);
+                });
+                // if (formKey.currentState!.validate()) {
+                //   return print('object');
+                // }
+                print(image);
+                register(image!, context);
               },
               style: ElevatedButton.styleFrom(
                 // padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
@@ -592,13 +995,15 @@ class _EditProfileState extends State<AddEmployees> {
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.03,
+            width: Mwidth * 0.03,
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.08,
-            width: MediaQuery.of(context).size.width * 0.45,
+            height: Mheight * 0.08,
+            width: Mwidth * 0.45,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               style: ElevatedButton.styleFrom(
                 // padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
                 backgroundColor: Colors.white,
@@ -621,288 +1026,326 @@ class _EditProfileState extends State<AddEmployees> {
   }
 
 // COMPANY INFO
-  Widget CompanyInfo() {
-    return Column(children: [
-      Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            'Select Branch',
-            style: TextStyle(
-                fontFamily: "Montserrat", fontWeight: FontWeight.bold),
-            textAlign: TextAlign.left,
-          )),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.01,
-      ),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.09,
-        child: DropdownButtonFormField<String>(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: BorderSide(color: Colors.blue)),
-            errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                borderSide: BorderSide(
-                  width: 1,
-                )),
-          ),
-          value: selectedcompany,
-          items: company
-              .map((company) => DropdownMenuItem<String>(
-                  value: company, child: Text(company)))
-              .toList(),
-          onChanged: (company) => setState(
-            () => selectedcompany = company!,
-          ),
-        ),
-      ),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.02,
-      ),
-      Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            'Designation',
-            style: TextStyle(
-                fontFamily: "Montserrat", fontWeight: FontWeight.bold),
-            textAlign: TextAlign.left,
-          )),
-      SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-      TextFormField(
-        style: TextStyle(
-            color: Color(0xFF3C5BFA),
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w500),
-        decoration: InputDecoration(
-            errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                borderSide: BorderSide(
-                  width: 1,
-                )),
-            // hintText: 'ADDRESS',
-            hintStyle: TextStyle(fontFamily: "Montserrat"),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: BorderSide(color: Colors.blue))),
-      ),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.02,
-      ),
-      Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            'Position (Prefrable)',
-            style: TextStyle(
-                fontFamily: "Montserrat", fontWeight: FontWeight.bold),
-            textAlign: TextAlign.left,
-          )),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.01,
-      ),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.09,
-        child: DropdownButtonFormField<String>(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: BorderSide(color: Colors.blue)),
-            errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                borderSide: BorderSide(
-                  width: 1,
-                )),
-          ),
-          value: selectedposition,
-          items: position
-              .map((position) => DropdownMenuItem<String>(
-                  value: position, child: Text(position)))
-              .toList(),
-          onChanged: (position) => setState(
-            () => selectedposition = position!,
-          ),
-        ),
-      ),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.02,
-      ),
-      Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            'Date Of Joining',
-            style: TextStyle(
-                fontFamily: "Montserrat", fontWeight: FontWeight.bold),
-            textAlign: TextAlign.left,
-          )),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.01,
-      ),
-      TextFormField(
-        readOnly: true,
-        style: TextStyle(
-            color: Color(0xFF3C5BFA),
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w500),
-        controller: _dateofjoin,
-        decoration: InputDecoration(
-            hintText: 'Enter Date Of Joining',
-            suffixIcon: Icon(Icons.calendar_today_rounded),
-            errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                borderSide: BorderSide(
-                  width: 1,
-                )),
-            hintStyle: TextStyle(fontFamily: "Montserrat"),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: BorderSide(color: Colors.blue))),
-        onTap: () async {
-          DateTime? pickedDOJdate = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2000),
-              lastDate: DateTime(2100));
+  // Widget CompanyInfo() {
+  // var Mheight=MediaQuery.of(context).size.height;
 
-          if (pickedDOJdate != null) {
-            setState(() {
-              _dateofjoin.text = DateFormat('dd-MM-yyyy').format(pickedDOJdate);
-            });
-          }
-        },
-      ),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.02,
-      ),
-      Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            'End of Contract',
-            style: TextStyle(
-                fontFamily: "Montserrat", fontWeight: FontWeight.bold),
-            textAlign: TextAlign.left,
-          )),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.01,
-      ),
-      TextFormField(
-        readOnly: true,
-        style: TextStyle(
-            color: Color(0xFF3C5BFA),
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.w500),
-        controller: _dateofcontract,
-        decoration: InputDecoration(
-            suffixIcon: Icon(Icons.calendar_today_rounded),
-            errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                borderSide: BorderSide(
-                  width: 1,
-                )),
-            hintText: 'Enter End Contract Date',
-            hintStyle: TextStyle(fontFamily: "Montserrat"),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: BorderSide(color: Colors.blue))),
-        onTap: () async {
-          DateTime? pickedEOCdate = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2000),
-              lastDate: DateTime(2100));
+  // return Column(children: [
+  //   Align(
+  //       alignment: Alignment.topLeft,
+  //       child: Text(
+  //         'Select Branch',
+  //         style: TextStyle(
+  //             fontFamily: "Montserrat", fontWeight: FontWeight.bold),
+  //         textAlign: TextAlign.left,
+  //       )),
+  //   SizedBox(
+  //     height: Mheight * 0.01,
+  //   ),
+  //   SizedBox(
+  //     height: Mheight * 0.09,
+  //     child: DropdownButtonFormField<String>(
+  //       decoration: InputDecoration(
+  //         border: OutlineInputBorder(
+  //             borderRadius: BorderRadius.circular(7),
+  //             borderSide: BorderSide(color: Colors.blue)),
+  //         errorBorder: OutlineInputBorder(
+  //             borderRadius: BorderRadius.all(Radius.circular(4)),
+  //             borderSide: BorderSide(
+  //               width: 1,
+  //             )),
+  //       ),
+  //       value: selectedcompany,
+  //       items: company
+  //           .map((company) => DropdownMenuItem<String>(
+  //               value: company, child: Text(company)))
+  //           .toList(),
+  //       onChanged: (company) => setState(
+  //         () => selectedcompany = company!,
+  //       ),
+  //     ),
+  //   ),
+  //   SizedBox(
+  //     height: Mheight * 0.02,
+  //   ),
+  //   Align(
+  //       alignment: Alignment.topLeft,
+  //       child: Text(
+  //         'Designation',
+  //         style: TextStyle(
+  //             fontFamily: "Montserrat", fontWeight: FontWeight.bold),
+  //         textAlign: TextAlign.left,
+  //       )),
+  //   SizedBox(height: Mheight * 0.01),
+  //   TextFormField(
+  //     style: TextStyle(
+  //         color: Color(0xFF3C5BFA),
+  //         fontFamily: "Montserrat",
+  //         fontWeight: FontWeight.w500),
+  //     decoration: InputDecoration(
+  //         errorBorder: OutlineInputBorder(
+  //             borderRadius: BorderRadius.all(Radius.circular(4)),
+  //             borderSide: BorderSide(
+  //               width: 1,
+  //             )),
+  //         // hintText: 'ADDRESS',
+  //         hintStyle: TextStyle(fontFamily: "Montserrat"),
+  //         border: OutlineInputBorder(
+  //             borderRadius: BorderRadius.circular(7),
+  //             borderSide: BorderSide(color: Colors.blue))),
+  //   ),
+  //   SizedBox(
+  //     height: Mheight * 0.02,
+  //   ),
+  //   Align(
+  //       alignment: Alignment.topLeft,
+  //       child: Text(
+  //         'Position (Prefrable)',
+  //         style: TextStyle(
+  //             fontFamily: "Montserrat", fontWeight: FontWeight.bold),
+  //         textAlign: TextAlign.left,
+  //       )),
+  //   SizedBox(
+  //     height: Mheight * 0.01,
+  //   ),
+  //   SizedBox(
+  //     height: Mheight * 0.09,
+  //     child: DropdownButtonFormField<String>(
+  //       decoration: InputDecoration(
+  //         border: OutlineInputBorder(
+  //             borderRadius: BorderRadius.circular(7),
+  //             borderSide: BorderSide(color: Colors.blue)),
+  //         errorBorder: OutlineInputBorder(
+  //             borderRadius: BorderRadius.all(Radius.circular(4)),
+  //             borderSide: BorderSide(
+  //               width: 1,
+  //             )),
+  //       ),
+  //       value: selectedposition,
+  //       items: position
+  //           .map((position) => DropdownMenuItem<String>(
+  //               value: position, child: Text(position)))
+  //           .toList(),
+  //       onChanged: (position) => setState(
+  //         () => selectedposition = position!,
+  //       ),
+  //     ),
+  //   ),
+  //   SizedBox(
+  //     height: Mheight * 0.02,
+  //   ),
+  //   Align(
+  //       alignment: Alignment.topLeft,
+  //       child: Text(
+  //         'Date Of Joining',
+  //         style: TextStyle(
+  //             fontFamily: "Montserrat", fontWeight: FontWeight.bold),
+  //         textAlign: TextAlign.left,
+  //       )),
+  //   SizedBox(
+  //     height: Mheight * 0.01,
+  //   ),
+  //   TextFormField(
+  //     readOnly: true,
+  //     style: TextStyle(
+  //         color: Color(0xFF3C5BFA),
+  //         fontFamily: "Montserrat",
+  //         fontWeight: FontWeight.w500),
+  //     controller: _dateofjoin,
+  //     decoration: InputDecoration(
+  //         hintText: 'Enter Date Of Joining',
+  //         suffixIcon: Icon(Icons.calendar_today_rounded),
+  //         errorBorder: OutlineInputBorder(
+  //             borderRadius: BorderRadius.all(Radius.circular(4)),
+  //             borderSide: BorderSide(
+  //               width: 1,
+  //             )),
+  //         hintStyle: TextStyle(fontFamily: "Montserrat"),
+  //         border: OutlineInputBorder(
+  //             borderRadius: BorderRadius.circular(7),
+  //             borderSide: BorderSide(color: Colors.blue))),
+  //     onTap: () async {
+  //       DateTime? pickedDOJdate = await showDatePicker(
+  //           context: context,
+  //           initialDate: DateTime.now(),
+  //           firstDate: DateTime(2000),
+  //           lastDate: DateTime(2100));
 
-          if (pickedEOCdate != null) {
-            setState(() {
-              _dateofcontract.text =
-                  DateFormat('dd-MM-yyyy').format(pickedEOCdate);
-            });
-          }
-        },
-      ),
-    ]);
-  }
+  //       if (pickedDOJdate != null) {
+  //         setState(() {
+  //           _dateofjoin.text = DateFormat('dd-MM-yyyy').format(pickedDOJdate);
+  //         });
+  //       }
+  //     },
+  //   ),
+  //   SizedBox(
+  //     height: Mheight * 0.02,
+  //   ),
+  //   Align(
+  //       alignment: Alignment.topLeft,
+  //       child: Text(
+  //         'End of Contract',
+  //         style: TextStyle(
+  //             fontFamily: "Montserrat", fontWeight: FontWeight.bold),
+  //         textAlign: TextAlign.left,
+  //       )),
+  //   SizedBox(
+  //     height: Mheight * 0.01,
+  //   ),
+  //   TextFormField(
+  //     readOnly: true,
+  //     style: TextStyle(
+  //         color: Color(0xFF3C5BFA),
+  //         fontFamily: "Montserrat",
+  //         fontWeight: FontWeight.w500),
+  //     controller: _dateofcontract,
+  //     decoration: InputDecoration(
+  //         suffixIcon: Icon(Icons.calendar_today_rounded),
+  //         errorBorder: OutlineInputBorder(
+  //             borderRadius: BorderRadius.all(Radius.circular(4)),
+  //             borderSide: BorderSide(
+  //               width: 1,
+  //             )),
+  //         hintText: 'Enter End Contract Date',
+  //         hintStyle: TextStyle(fontFamily: "Montserrat"),
+  //         border: OutlineInputBorder(
+  //             borderRadius: BorderRadius.circular(7),
+  //             borderSide: BorderSide(color: Colors.blue))),
+  //     onTap: () async {
+  //       DateTime? pickedEOCdate = await showDatePicker(
+  //           context: context,
+  //           initialDate: DateTime.now(),
+  //           firstDate: DateTime(2000),
+  //           lastDate: DateTime(2100));
+
+  //       if (pickedEOCdate != null) {
+  //         setState(() {
+  //           _dateofcontract.text =
+  //               DateFormat('dd-MM-yyyy').format(pickedEOCdate);
+  //         });
+  //       }
+  //     },
+  //   ),
+  // ]);
+}
 
 //PICKING IMAGE
-  Widget picking() {
-    return Container(
-      height: 100.0,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Column(children: [
-        Text(
-          "Choose Profile Photo",
-          style: TextStyle(fontSize: 20, fontFamily: "Montserrat"),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton.icon(
-                onPressed: () {
-                  getimage();
-                },
-                icon: Icon(Icons.camera, color: Colors.blue),
-                label: Text('Camera',
-                    style: TextStyle(fontSize: 20, fontFamily: "Montserrat"))),
-            TextButton.icon(
-                onPressed: () {
-                  getgallery();
-                },
-                icon: Icon(
-                  Icons.image,
-                  color: Colors.blue,
-                ),
-                label: Text('Gallery',
-                    style: TextStyle(fontSize: 20, fontFamily: "Montserrat")))
-          ],
-        )
-      ]),
-    );
-  }
+  // Widget picking() {
+  //   var Mwidth=MediaQuery.of(context).size.width;
+  //   return Container(
+  //     height: 100.0,
+  //     width: Mwidth,
+  //     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+  //     child: Column(children: [
+  //       Text(
+  //         "Choose Profile Photo",
+  //         style: TextStyle(fontSize: 20, fontFamily: "Montserrat"),
+  //       ),
+  //       SizedBox(
+  //         height: 10,
+  //       ),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           TextButton.icon(
+  //               onPressed: () {
+  //                 getimage();
+  //               },
+  //               icon: Icon(Icons.camera, color: Colors.blue),
+  //               label: Text('Camera',
+  //                   style: TextStyle(fontSize: 20, fontFamily: "Montserrat"))),
+  //           TextButton.icon(
+  //               onPressed: () {
+  //                 getgallery();
+  //               },
+  //               icon: Icon(
+  //                 Icons.image,
+  //                 color: Colors.blue,
+  //               ),
+  //               label: Text('Gallery',
+  //                   style: TextStyle(fontSize: 20, fontFamily: "Montserrat")))
+  //         ],
+  //       )
+  //     ]),
+  //   );
+  // }
 
 // PROFILE
-  Widget imageprofile() {
-    return Center(
-      child: Stack(children: [
-        CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 60,
-            child: ClipOval(
-                child: Container(
-              height: 120.0,
-              width: 120.0,
-              child: image == null
-                  ? Image.asset(
-                      'assets/images/profile.png',
-                      fit: BoxFit.cover,
-                    )
-                  : Image.file(
-                      image!,
-                      fit: BoxFit.values[1],
-                    ),
-            ))),
-        Positioned(
-            bottom: 0,
-            right: 5,
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 2, color: Colors.blue)),
-              child: InkWell(
-                  onTap: () => {
-                        showModalBottomSheet(
-                            context: context, builder: ((builder) => picking()))
-                      },
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.blue,
-                  )),
-            ))
-      ]),
-    );
-  }
-}
+  // Widget imageprofile() {
+  //   return Center(
+  //     child: Stack(children: [
+  //       CircleAvatar(
+  //           backgroundColor: Colors.white,
+  //           radius: 60,
+  //           child: ClipOval(
+  //               child: Container(
+  //             height: 120.0,
+  //             width: 120.0,
+  //             child: image == null
+  //                 ? Image.asset(
+  //                     'assets/images/profile.png',
+  //                     fit: BoxFit.cover,
+  //                   )
+  //                 : Image.file(
+  //                     image!,
+  //                     fit: BoxFit.values[1],
+  //                   ),
+  //           ))),
+  //       Positioned(
+  //           bottom: 0,
+  //           right: 5,
+  //           child: Container(
+  //             height: 40,
+  //             width: 40,
+  //             decoration: BoxDecoration(
+  //                 color: Colors.white,
+  //                 shape: BoxShape.circle,
+  //                 border: Border.all(width: 2, color: Colors.blue)),
+  //             child: InkWell(
+  //                 onTap: () => {
+  //                       showModalBottomSheet(
+  //                           context: context, builder: ((builder) => Container(
+  //     height: 100.0,
+  //     width: Mwidth,
+  //     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+  //     child: Column(children: [
+  //       Text(
+  //         "Choose Profile Photo",
+  //         style: TextStyle(fontSize: 20, fontFamily: "Montserrat"),
+  //       ),
+  //       SizedBox(
+  //         height: 10,
+  //       ),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           TextButton.icon(
+  //               onPressed: () {
+  //                 getimage();
+  //               },
+  //               icon: Icon(Icons.camera, color: Colors.blue),
+  //               label: Text('Camera',
+  //                   style: TextStyle(fontSize: 20, fontFamily: "Montserrat"))),
+  //           TextButton.icon(
+  //               onPressed: () {
+  //                 getgallery();
+  //               },
+  //               icon: Icon(
+  //                 Icons.image,
+  //                 color: Colors.blue,
+  //               ),
+  //               label: Text('Gallery',
+  //                   style: TextStyle(fontSize: 20, fontFamily: "Montserrat")))
+  //         ],
+  //       )
+  //     ]),
+  //   )))
+  //                     },
+  //                 child: Icon(
+  //                   Icons.edit,
+  //                   color: Colors.blue,
+  //                 )),
+  //           ))
+  //     ]),
+  //   );
+  // }
+

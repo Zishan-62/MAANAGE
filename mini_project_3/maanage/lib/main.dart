@@ -6,6 +6,7 @@ import 'package:maanage/Login/splashScreen.dart';
 import 'package:maanage/Project.dart';
 import 'package:maanage/Project/viewProject.dart';
 import 'package:maanage/Report.dart';
+import 'package:maanage/custom%20widgets/Custom_text.dart';
 import 'package:maanage/employees/employee.dart';
 import 'package:maanage/employees/seemoreleader.dart';
 // import 'package:maanage/employees/seeMoreEmployeedart';
@@ -80,118 +81,300 @@ class _MaterialState extends State<MaterialMain> {
   late final ShapeBorder? indicatorShape;
   @override
   Widget build(BuildContext context) {
+    var Mwidth = MediaQuery.of(context).size.width;
+    var Mheight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: <Widget>[...screen],
-      ),
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-            // indicatorShape: ShapeBorder,
-            indicatorColor: Colors.blueAccent,
-            labelTextStyle: MaterialStateProperty.all(TextStyle(
-                color: const Color(0xFF3C5BFA),
-                fontSize: 12,
-                fontWeight: FontWeight.w500))),
-        child: NavigationBar(
-          destinations: [
-            NavigationDestination(
-              // selectedIcon: Container(
-              //   C
-              // ),
-              icon: Icon(
-                Icons.home,
-                color: _currentIndex == 0 ? Colors.white : Color(0xFF3C5BFA),
-              ),
-              label: 'Home',
-            ),
-            NavigationDestination(
-              icon: Icon(
-                Icons.person_outline,
-                color: _currentIndex == 1 ? Colors.white : Color(0xFF3C5BFA),
-              ),
-              label: 'Employees',
-            ),
-            // NavigationDestination(
-            //   icon: Icon(
-            //     Icons.assessment_outlined,
-            //     color: _currentIndex == 2 ? Colors.white : Color(0xFF3C5BFA),
-            //   ),
-            //   label: 'Report',
-            // ),
-            NavigationDestination(
-              icon: Icon(
-                Icons.border_all_rounded,
-                color: _currentIndex == 2 ? Colors.white : Color(0xFF3C5BFA),
-              ),
-              label: 'Project',
-            ),
-            NavigationDestination(
-              icon: CircleAvatar(
-                foregroundColor: Color(0xFF3C5BFA),
-                backgroundImage: NetworkImage(
-                  'https://picsum.photos/250?image=9',
-                ),
-                radius: 20,
-              ),
-              label: '',
-            )
-          ],
-          animationDuration: Duration(milliseconds: 100),
-          shadowColor: Colors.green,
-          backgroundColor: const Color(0xFFFFFFFF),
-          // labelBehavior: NavigationDestinationLabelBehavior.,
-          surfaceTintColor: Colors.red,
-          elevation: BorderSide.strokeAlignCenter,
-          selectedIndex: _currentIndex,
-          onDestinationSelected: (int index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
+        body: IndexedStack(
+          index: _currentIndex,
+          children: <Widget>[...screen],
         ),
+        bottomNavigationBar: buildMyNavBar(context)
+        // NavigationBarTheme(
+        //   data: NavigationBarThemeData(
+
+        //       // indicatorShape: ShapeBorder,
+        //       indicatorColor: Colors.blueAccent,
+        //       labelTextStyle: MaterialStateProperty.all(TextStyle(
+        //           color: const Color(0xFF3C5BFA),
+        //           fontSize: 12,
+        //           fontWeight: FontWeight.w500))),
+        //   child: NavigationBar(
+        //     destinations: [
+        //       NavigationDestination(
+        //         // selectedIcon: Container(
+        //         //   C
+        //         // ),
+        //         icon: Icon(
+        //           Icons.home,
+        //           color: _currentIndex == 0 ? Colors.white : Color(0xFF3C5BFA),
+        //         ),
+        //         label: 'Home',
+        //       ),
+        //       NavigationDestination(
+        //         icon: Icon(
+        //           Icons.person_outline,
+        //           color: _currentIndex == 1 ? Colors.white : Color(0xFF3C5BFA),
+        //         ),
+        //         label: 'Employees',
+        //       ),
+        //       // NavigationDestination(
+        //       //   icon: Icon(
+        //       //     Icons.assessment_outlined,
+        //       //     color: _currentIndex == 2 ? Colors.white : Color(0xFF3C5BFA),
+        //       //   ),
+        //       //   label: 'Report',
+        //       // ),
+        //       NavigationDestination(
+        //         icon: Icon(
+        //           Icons.border_all_rounded,
+        //           color: _currentIndex == 2 ? Colors.white : Color(0xFF3C5BFA),
+        //         ),
+        //         label: 'Project',
+        //       ),
+        //       NavigationDestination(
+        //         icon: CircleAvatar(
+        //           foregroundColor: Color(0xFF3C5BFA),
+        //           backgroundImage: NetworkImage(
+        //             'https://picsum.photos/250?image=9',
+        //           ),
+        //           radius: 20,
+        //         ),
+        //         label: '',
+        //       )
+        //     ],
+        //     animationDuration: Duration(milliseconds: 100),
+        //     shadowColor: Colors.green,
+        //     backgroundColor: const Color(0xFFFFFFFF),
+        //     // labelBehavior: NavigationDestinationLabelBehavior.,
+        //     surfaceTintColor: Colors.red,
+        //     elevation: BorderSide.strokeAlignCenter,
+        //     selectedIndex: _currentIndex,
+        //     onDestinationSelected: (int index) {
+        //       setState(() {
+        //         _currentIndex = index;
+        //       });
+        //     },
+        //   ),
+        // ),
+        // bottomNavigationBar: BottomNavigationBar(
+        // currentIndex: _currentIndex,
+        // // type: BottomNavigationBarType.fixed,
+        // items: const [
+        //   BottomNavigationBarItem(
+        //       icon: Icon(
+        //         Icons.home,
+        //       ),
+        //       label: 'Home',
+        //       backgroundColor: Color(0xFF3C5BFA)),
+        //   BottomNavigationBarItem(
+        //       icon: Icon(
+        //         Icons.person_outline,
+        //       ),
+        //       label: 'Employees',
+        //       backgroundColor: Color(0xFF3C5BFA)),
+        //   BottomNavigationBarItem(
+        //       icon: Icon(Icons.border_all_rounded),
+        //       label: 'Project',
+        //       backgroundColor: Color(0xFF3C5BFA)),
+        //   BottomNavigationBarItem(
+        //       icon: Icon(Icons.assessment_outlined),
+        //       label: 'Report',
+        //       backgroundColor: Color(0xFF3C5BFA)),
+        //   BottomNavigationBarItem(
+        //       icon: CircleAvatar(
+        //         foregroundColor: Color(0xFF3C5BFA),
+        //         backgroundImage: NetworkImage(
+        //           'https://picsum.photos/250?image=9',
+        //         ),
+        //         radius: 20,
+        //       ),
+        //       label: '',
+        //       backgroundColor: Color(0xFF3C5BFA))
+        // ],
+        // onTap: (index) {
+        //   setState(() {
+        //     _currentIndex = index;
+        //   });
+        //   },
+        // )
+        );
+  }
+
+  Container buildMyNavBar(BuildContext context) {
+    var Mwidth = MediaQuery.of(context).size.width;
+    var Mheight = MediaQuery.of(context).size.height;
+    return Container(
+      height: 60,
+      decoration: BoxDecoration(
+        color: Colors.blue,
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      // currentIndex: _currentIndex,
-      // // type: BottomNavigationBarType.fixed,
-      // items: const [
-      //   BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.home,
-      //       ),
-      //       label: 'Home',
-      //       backgroundColor: Color(0xFF3C5BFA)),
-      //   BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.person_outline,
-      //       ),
-      //       label: 'Employees',
-      //       backgroundColor: Color(0xFF3C5BFA)),
-      //   BottomNavigationBarItem(
-      //       icon: Icon(Icons.border_all_rounded),
-      //       label: 'Project',
-      //       backgroundColor: Color(0xFF3C5BFA)),
-      //   BottomNavigationBarItem(
-      //       icon: Icon(Icons.assessment_outlined),
-      //       label: 'Report',
-      //       backgroundColor: Color(0xFF3C5BFA)),
-      //   BottomNavigationBarItem(
-      //       icon: CircleAvatar(
-      //         foregroundColor: Color(0xFF3C5BFA),
-      //         backgroundImage: NetworkImage(
-      //           'https://picsum.photos/250?image=9',
-      //         ),
-      //         radius: 20,
-      //       ),
-      //       label: '',
-      //       backgroundColor: Color(0xFF3C5BFA))
-      // ],
-      // onTap: (index) {
-      //   setState(() {
-      //     _currentIndex = index;
-      //   });
-      //   },
-      // )
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: double.infinity,
+            width: Mwidth * 0.25,
+            decoration: BoxDecoration(
+              color: _currentIndex == 0 ? Color(0xFF3C5BFA) : Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 5,
+                ),
+                IconButton(
+                  // splashRadius: 0,
+                  padding: EdgeInsets.only(bottom: 10, right: 5),
+                  constraints: BoxConstraints(),
+                  enableFeedback: false,
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 0;
+                    });
+                  },
+                  icon: _currentIndex == 0
+                      ? const Icon(
+                          Icons.home,
+                          color: Colors.white,
+                          size: 35,
+                        )
+                      : const Icon(
+                          Icons.home_outlined,
+                          color: Color(0xFF3C5BFA),
+                          size: 35,
+                        ),
+                ),
+                CustomText(
+                  fontWeight: FontWeight.w500,
+                  text: 'Home',
+                  textcolor:
+                      _currentIndex == 0 ? Colors.white : Color(0xFF3C5BFA),
+                )
+              ],
+            ),
+          ),
+          Container(
+            height: double.infinity,
+            width: Mwidth * 0.25,
+            decoration: BoxDecoration(
+              color: _currentIndex == 1 ? Color(0xFF3C5BFA) : Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 5,
+                ),
+                IconButton(
+                  // splashRadius: 0,
+                  padding: EdgeInsets.only(bottom: 10, right: 5),
+                  constraints: BoxConstraints(),
+                  enableFeedback: false,
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 1;
+                    });
+                  },
+                  icon: _currentIndex == 1
+                      ? const Icon(
+                          Icons.person_pin_rounded,
+                          color: Colors.white,
+                          size: 35,
+                        )
+                      : const Icon(
+                          Icons.people_outline_outlined,
+                          color: Color(0xFF3C5BFA),
+                          size: 35,
+                        ),
+                ),
+                CustomText(
+                  fontWeight: FontWeight.w500,
+                  text: 'Employees',
+                  textcolor:
+                      _currentIndex == 1 ? Colors.white : Color(0xFF3C5BFA),
+                )
+              ],
+            ),
+          ),
+          Container(
+            height: double.infinity,
+            width: Mwidth * 0.25,
+            decoration: BoxDecoration(
+              color: _currentIndex == 2 ? Color(0xFF3C5BFA) : Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 5,
+                ),
+                IconButton(
+                  // splashRadius: 0,
+                  padding: EdgeInsets.only(bottom: 10, right: 5),
+                  constraints: BoxConstraints(),
+                  enableFeedback: false,
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 2;
+                    });
+                  },
+                  icon: _currentIndex == 2
+                      ? const Icon(
+                          Icons.border_all_rounded,
+                          color: Colors.white,
+                          size: 35,
+                        )
+                      : const Icon(
+                          Icons.border_all_rounded,
+                          color: Color(0xFF3C5BFA),
+                          size: 35,
+                        ),
+                ),
+                CustomText(
+                  fontWeight: FontWeight.w500,
+                  text: 'Projects',
+                  textcolor:
+                      _currentIndex == 2 ? Colors.white : Color(0xFF3C5BFA),
+                )
+              ],
+            ),
+          ),
+          Container(
+            height: double.infinity,
+            width: Mwidth * 0.25,
+            decoration: BoxDecoration(
+                color: _currentIndex == 3 ? Color(0xFF3C5BFA) : Colors.white),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 5,
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _currentIndex = 3;
+                    });
+                  },
+                  child: CircleAvatar(
+                    foregroundColor: Color(0xFF3C5BFA),
+                    backgroundImage: NetworkImage(
+                      'https://picsum.photos/250?image=9',
+                    ),
+                    radius: 20,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

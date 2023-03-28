@@ -113,6 +113,7 @@ class _OtpPageState extends State<OtpPage> {
                         await auth.signInWithCredential(credential);
                         sharedprf(widget.data);
                         first_name = widget.data['data']['first_name'];
+                        appr_id=widget.data['data']['admin_id'];
                         // Navigator.pushNamed(context, 'login')
                         Navigator.pushNamedAndRemoveUntil(
                             context, 'companyinfo', (route) => false);
@@ -162,5 +163,6 @@ class _OtpPageState extends State<OtpPage> {
     await pref.setString('lname', details['data']['last_name']);
     await pref.setString('email', details['data']['email']);
     await pref.setString('phone', details['data']['phone']);
+    await pref.setString('admin', details['data']['admin_id']);
   }
 }

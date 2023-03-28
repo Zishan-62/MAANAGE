@@ -116,6 +116,7 @@ class _AttendanceState extends State<Attendance> {
               color: Color(0xfff4f4f4),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Align(
                     alignment: Alignment.center,

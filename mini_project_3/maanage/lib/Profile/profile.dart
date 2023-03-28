@@ -112,7 +112,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                             top: MediaQuery.of(context).size.height * 0.009),
                         child: CircleAvatar(
                           backgroundImage: AssetImage(
-                            'assets/images/Umar.jpeg',
+                            'assets/images/zishan.jpg',
                           ),
                           // foregroundColor: Colors.grey,
                           backgroundColor: Colors.grey,
@@ -123,7 +123,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       Text(
-                        'UMAR SIDDIQUE',
+                        'Sorathiya Mohamed Zishan',
                         style: TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 18,
@@ -135,7 +135,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         height: MediaQuery.of(context).size.height * 0.01,
                       ),
                       Text(
-                        'MAKER  ',
+                        'Developer    ',
                         style: TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 12,

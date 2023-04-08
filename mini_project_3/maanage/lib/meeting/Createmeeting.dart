@@ -14,23 +14,76 @@ class CreateMeeting extends StatefulWidget {
 }
 
 class CreateMeetingState extends State<CreateMeeting> {
-  TimeOfDay _timeOfDay = TimeOfDay(hour: 10, minute: 30);
-  TimeOfDay time = TimeOfDay(hour: 10, minute: 30);
+  final _startTimeController = TextEditingController();
+  final _endTimeController = TextEditingController();
 
-  void _showTimerPicker() {
-    showTimePicker(context: context, initialTime: TimeOfDay.now())
-        .then((value) {
+  TimeOfDay? _startTime;
+  TimeOfDay? _endTime;
+
+  Future<void> _selectStartTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _startTime ?? TimeOfDay.now(),
+    );
+    if (picked != null && picked != _startTime) {
       setState(() {
-        _timeOfDay = value!;
+        _startTime = picked;
+        _startTimeController.text = _startTime!.format(context);
       });
-    });
+    }
   }
 
-  void showsectimepicker() {
-    showTimePicker(context: context, initialTime: TimeOfDay.now())
-        .then((value) {
+  Future<void> _selectEndTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _endTime ?? TimeOfDay.now(),
+    );
+    if (picked != null && picked != _endTime) {
       setState(() {
-        time = value!;
+        _endTime = picked;
+        _endTimeController.text = _endTime!.format(context);
+      });
+    }
+  }
+
+  String? _validateTime(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field is required';
+    }
+    final time = TimeOfDay.fromDateTime(DateTime.parse('2000-01-01 $value'));
+    if (time == null) {
+      return 'Invalid time format';
+    }
+    return null;
+  }
+
+  String? _validateAndSubmit(String? value) {
+    if (_startTime == null || _endTime == null) {
+      // show error message, both fields are required
+      return "wrong";
+    }
+    if (_startTime!.hour > _endTime!.hour ||
+        (_startTime!.hour == _endTime!.hour &&
+            _startTime!.minute >= _endTime!.minute)) {
+      // show error message, start time should be before end time
+      return "wrong";
+    }
+    // proceed with submitting the form
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimeController.addListener(() {
+      setState(() {
+        _startTime = TimeOfDay.fromDateTime(
+            DateTime.parse('2000-01-01 ${_startTimeController.text}'));
+      });
+    });
+    _endTimeController.addListener(() {
+      setState(() {
+        _endTime = TimeOfDay.fromDateTime(
+            DateTime.parse('2000-01-01 ${_endTimeController.text}'));
       });
     });
   }
@@ -111,6 +164,14 @@ class CreateMeetingState extends State<CreateMeeting> {
                 color: Color(0xFF3C5BFA),
               ),
               decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 border: OutlineInputBorder(),
                 hintText: 'Enter Project name',
               ),
@@ -150,7 +211,14 @@ class CreateMeetingState extends State<CreateMeeting> {
                 color: Color(0xFF3C5BFA),
               ),
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 hintText: 'Enter Title',
               ),
             ),
@@ -163,7 +231,7 @@ class CreateMeetingState extends State<CreateMeeting> {
             color: Color(0xFFF5F5F5),
             child: TextButton.icon(
               // <-- TextButton
-              onPressed: () {},
+              onPressed: null,
               icon: Icon(
                 Icons.notes,
                 size: 24,
@@ -191,7 +259,14 @@ class CreateMeetingState extends State<CreateMeeting> {
               minLines: 13,
               maxLines: 15,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 hintText: 'Enter Discription',
               ),
             ),
@@ -255,37 +330,35 @@ class CreateMeetingState extends State<CreateMeeting> {
               ],
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  // width: width * 0.5,
-                  height: height * 0.13,
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    radius: 25,
-                  ),
-                ),
-                Container(
-                  height: height * 0.13,
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: 25,
-                  ),
-                ),
-                Container(
-                  height: height * 0.13,
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.green,
-                    radius: 25,
-                  ),
-                ),
-              ],
+          Container(
+            margin: EdgeInsets.fromLTRB(5, 10, 0, 10),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: <Widget>[
+                  for (var i = 0; i < 10; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 5),
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage:
+                                AssetImage("assets/images/Umar.jpeg"),
+                            radius: MediaQuery.of(context).size.height * 0.04,
+                          ),
+                          Positioned(
+                              top: -14,
+                              left: 27,
+                              child: IconButton(
+                                color: Colors.red,
+                                icon: Icon(Icons.cancel),
+                                onPressed: () {},
+                              ))
+                        ],
+                      ),
+                    )
+                ],
+              ),
             ),
           ),
           Container(
@@ -325,6 +398,14 @@ class CreateMeetingState extends State<CreateMeeting> {
                   fontWeight: FontWeight.w500),
               controller: _dateS,
               decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   suffixIcon: Icon(Icons.calendar_today_rounded),
                   errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -359,7 +440,7 @@ class CreateMeetingState extends State<CreateMeeting> {
             color: Color(0xFFF5F5F5),
             child: TextButton.icon(
               // <-- TextButton
-              onPressed: () {},
+              onPressed: null,
               icon: Icon(
                 Icons.access_time,
                 size: 24,
@@ -375,7 +456,7 @@ class CreateMeetingState extends State<CreateMeeting> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
                 // color: Colors.blue,
@@ -390,41 +471,91 @@ class CreateMeetingState extends State<CreateMeeting> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(_timeOfDay.format(context).toString()),
-                        IconButton(
-                          onPressed: _showTimerPicker,
-                          icon: Icon(
-                            Icons.access_time_outlined,
-                          ),
+                        Container(
+                          // height: height * 0.8,
+                          width: width * 0.4,
+                          // margin: EdgeInsets.fromLTRB(20, 15, 20, 30),
+                          child: TextFormField(
+                              validator: _validateAndSubmit,
+                              readOnly: true,
+                              style: TextStyle(
+                                  color: Color(0xFF3C5BFA),
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.w500),
+                              controller: _startTimeController,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xfff4f4f4)),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xfff4f4f4)),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  suffixIcon: Icon(Icons.access_time),
+                                  hintText: 'Start Time',
+                                  hintStyle:
+                                      TextStyle(fontFamily: "Montserrat"),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(7),
+                                      borderSide: BorderSide(
+                                          color: Color(0xfff4f4f4)))),
+                              onTap: () {
+                                _selectStartTime(context);
+                              }),
                         ),
+
+                        // IconButton(
+                        //   onPressed: _showTimerPicker,
+                        //   icon: Icon(
+                        //     Icons.access_time_outlined,
+                        //   ),
+                        // ),
                       ],
                     )),
               ),
               Container(
-                  //  color: Colors.blue,
-                  margin: EdgeInsets.fromLTRB(5, 10, 0, 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(0xFFFFFFFF)),
-                  width: width * 0.4,
-                  height: height * 0.085,
-                  child: Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      //50 , 10 , 10 ,10
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(time.format(context).toString()),
-                          IconButton(
-                            onPressed: showsectimepicker,
-                            icon: Icon(
-                              Icons.access_time_outlined,
-                            ),
-                          ),
-                        ],
-                      )))
+                // height: height * 0.8,
+                width: width * 0.4,
+                // margin: EdgeInsets.fromLTRB(20, 15, 20, 30),
+                child: TextFormField(
+                  validator: _validateAndSubmit,
+                  readOnly: true,
+                  style: TextStyle(
+                      color: Color(0xFF3C5BFA),
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.w500),
+                  controller: _endTimeController,
+                  decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      suffixIcon: Icon(Icons.access_time),
+                      errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 1,
+                          )),
+                      hintText: 'End Time',
+                      hintStyle: TextStyle(fontFamily: "Montserrat"),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          borderSide: BorderSide(color: Color(0xfff4f4f4)))),
+                  onTap: () {
+                    _selectEndTime(context);
+                  },
+                ),
+              ),
             ],
           ),
+
           Container(
             alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -459,7 +590,20 @@ class CreateMeetingState extends State<CreateMeeting> {
             height: height * 0.08,
             width: width * 0.97,
             color: Color(0xFFFFFFFF),
-            child: DropdownButton<String>(
+            child: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(7),
+                      borderSide: BorderSide(color: Colors.blue)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 icon: Icon(Icons.keyboard_arrow_down),
                 iconEnabledColor: Color(0xFF3C5BFA),
                 onChanged: (String? newValue) {
@@ -538,7 +682,7 @@ class CreateMeetingState extends State<CreateMeeting> {
       ]),
       persistentFooterButtons: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
               alignment: Alignment.centerLeft,
@@ -599,7 +743,15 @@ class CreateMeetingState extends State<CreateMeeting> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    _startTimeController.dispose();
+    _endTimeController.dispose();
+    super.dispose();
+  }
 }
+
 
 //  Container(
 //   alignment: Alignment.topLeft,

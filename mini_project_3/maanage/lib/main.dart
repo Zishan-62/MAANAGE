@@ -9,6 +9,7 @@ import 'package:maanage/Report.dart';
 import 'package:maanage/custom%20widgets/Custom_text.dart';
 import 'package:maanage/employees/employee.dart';
 import 'package:maanage/employees/seemoreleader.dart';
+import 'package:maanage/meeting/editMeetingDetail.dart';
 // import 'package:maanage/employees/seeMoreEmployeedart';
 import './dashboard/dashboard.dart';
 import 'Login/CompanyReg.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         "viewproject": (context) => ViewProject(),
         'splashScreen': (context) => Splash(),
         'profile': (context) => Profile(),
+        'editmeetdetail': (Context) => EditMeetDetail(),
       },
       initialRoute: 'splashScreen',
       // home:  Login(),

@@ -19,6 +19,9 @@ class _MeetingsState extends State<Meetings> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset(
@@ -107,30 +110,140 @@ class _MeetingsState extends State<Meetings> {
             ),
           ]),
         ),
-        ListView(shrinkWrap: true,
-          children: [
-            Column(
-              children: [Padding(
-                padding:  EdgeInsets.only(top:20.0),
-                child: Container(width: MediaQuery.of(context).size.width*0.90,
-                height: MediaQuery.of(context).size.width*0.45,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                  child: Column(children: [
-                    Row(children: 
-                    [Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomText(text: 'LaundryGo',fontWeight: FontWeight.bold,fontSize: 25,textcolor:fontclr ,),
-                    )],)
-                  ]),
-                ),
-              )],
-            )
-          ],
+        Container(
+          height: height * 0.8,
+          width: double.infinity,
+          child: ListView(
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                child: Column(children: [
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    color: Color(0xfff4f4f4),
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
+                      // color: Color(0xfff4f4f4),
+                      width: double.infinity,
+
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                InkWell(
+                                  onTap: () => {
+                                    Navigator.pushNamed(
+                                        context, "editmeetdetail")
+                                  },
+                                  child: CustomText(
+                                    text: 'LaundryGo',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    textcolor: fontclr,
+                                  ),
+                                ),
+                                CustomText(
+                                  text: 'Wed, 03 AUG',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  textcolor: Colors.black,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.002,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomText(
+                                    text: 'Admin Dashboard',
+                                    fontWeight: FontWeight.w500,
+                                    textAlign: TextAlign.start,
+                                    textcolor: Colors.black,
+                                    fontSize: 12),
+                                CustomText(
+                                    text: '12:00 AM',
+                                    fontWeight: FontWeight.w500,
+                                    textAlign: TextAlign.start,
+                                    textcolor: Colors.black,
+                                    fontSize: 12),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.024,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // crossAxisAlignment: CrossAxisAlignment.,
+                              children: [
+                                // for(int i=0; i<RandomImages.length ; i++)
+                                Row(
+                                  children: [
+                                    for (var i = 0; i < 3; i++)
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(
+                                            "assets/images/Umar.jpeg"),
+                                        radius: 25,
+                                      ),
+                                  ],
+                                ),
+                                Container(
+                                  // alignment: Alignment.bottomRight,
+                                  height: height * 0.06,
+                                  width: width * 0.33,
+                                  child: InkWell(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF3C5BFA),
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        ),
+                                        child: Align(
+                                            child: Text(
+                                              'Start Meeting',
+                                              style: TextStyle(
+                                                  color: Color(0xFFFFFFFF),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            alignment: Alignment.center),
+                                      ),
+                                      //onTap: (){
+                                      //  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage() ),
+                                      //  },
+                                      onTap: () {
+                                        //  validateReg,
+                                        setState(() {});
+                                      }),
+                                ),
+                                IconButton(
+                                  color: Colors.red,
+                                  iconSize: 45,
+                                  icon: Icon(Icons.cancel),
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                          ]),
+                    ),
+                  )
+                ]),
+              )
+            ],
+          ),
         )
       ]),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.pushNamed(context, 'createmeeting');
-      },child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF3C5BFA),
+        onPressed: () {
+          Navigator.pushNamed(context, 'createmeeting');
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

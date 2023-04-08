@@ -41,11 +41,16 @@ class AddMeetingState extends State<AddMeeting> {
                 height: height * 0.04,
                 width: width * 0.40,
                 child: Align(
-                  child: Text(
-                    'LaundryGo',
-                    style: TextStyle(
-                      color: Color(0xFF373737),
-                      fontSize: 18,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, "");
+                    },
+                    child: Text(
+                      'LaundryGo',
+                      style: TextStyle(
+                        color: Color(0xFF373737),
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                   alignment: Alignment.centerLeft,

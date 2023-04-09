@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         'profile': (context) => Profile(),
         'editmeetdetail': (Context) => EditMeetDetail(),
       },
-      initialRoute: 'splashScreengt',
+      initialRoute: 'splashScreen',
       // home:  Login(),
     );
   }

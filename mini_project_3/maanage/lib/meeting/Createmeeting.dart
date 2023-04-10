@@ -331,13 +331,13 @@ class CreateMeetingState extends State<CreateMeeting> {
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(5, 10, 0, 10),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: <Widget>[
-                  for (var i = 0; i < 10; i++)
-                    Padding(
+              height: height * 0.09,
+              margin: EdgeInsets.fromLTRB(5, 10, 0, 10),
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 6,
+                  itemBuilder: (context, index) {
+                    return Padding(
                       padding: const EdgeInsets.only(right: 5, left: 5),
                       child: Stack(
                         children: [
@@ -356,11 +356,8 @@ class CreateMeetingState extends State<CreateMeeting> {
                               ))
                         ],
                       ),
-                    )
-                ],
-              ),
-            ),
-          ),
+                    );
+                  })),
           Container(
             alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),

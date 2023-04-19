@@ -192,6 +192,12 @@ class _EditProfileState extends State<AddEmployees> {
       setState(() {
         isSelectedEmp = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: CustomText(
+        text: 'Employee Successfully added',
+        textcolor: Colors.white,
+      )));
+      Navigator.pop(context);
     } else {
       print(response.reasonPhrase);
       setState(() {
@@ -209,7 +215,7 @@ class _EditProfileState extends State<AddEmployees> {
         actions: [
           IconButton(
               onPressed: () {
-                print(selectedposition);
+                print(data2);
 
                 // print(data2.length);
               },

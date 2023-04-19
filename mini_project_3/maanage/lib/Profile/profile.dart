@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 // import 'attendace.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:maanage/global.dart';
 
 import 'edit_profile.dart';
 import 'attendance.dart';
@@ -123,7 +124,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       Text(
-                        'Sorathiya Mohamed Zishan',
+                        "${first_name}",
                         style: TextStyle(
                           fontFamily: "Montserrat",
                           fontSize: 18,

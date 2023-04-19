@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -19,6 +20,7 @@ import '../custom widgets/custom_container.dart';
 import '../global.dart';
 import '../meeting/Createmeeting.dart';
 import '../meeting/meeting.dart';
+
 
 // ignore: camel_case_types
 class DashBoard extends StatefulWidget {
@@ -186,6 +188,10 @@ class _DashBoardState extends State<DashBoard> {
         MaterialPageRoute(builder: (c) => Login()), (route) => false);
   }
 
+// Employee data
+  // var uplode;
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -227,6 +233,7 @@ class _DashBoardState extends State<DashBoard> {
           InkWell(
               onTap: () {
                 removeData();
+                // print(appr_id);
               },
               child: Image.asset('assets/images/coolicon.png')),
           Image.asset('assets/images/layer.png')

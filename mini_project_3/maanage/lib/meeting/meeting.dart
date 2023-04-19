@@ -111,7 +111,7 @@ class _MeetingsState extends State<Meetings> {
           ]),
         ),
         Container(
-            height: height * 0.8,
+            height: height * 0.75,
             width: double.infinity,
             child: ListView.builder(
               itemCount: 5,

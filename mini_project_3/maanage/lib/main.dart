@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:maanage/Login/login.dart';
 import 'package:maanage/Login/splashScreen.dart';
-import 'package:maanage/Project.dart';
+// import 'package:maanage/Project.dart';
 import 'package:maanage/Project/viewProject.dart';
-import 'package:maanage/Report.dart';
+// import 'package:maanage/Report.dart';
 import 'package:maanage/custom%20widgets/Custom_text.dart';
 import 'package:maanage/employees/employee.dart';
 import 'package:maanage/employees/seemoreleader.dart';
@@ -13,14 +15,16 @@ import 'package:maanage/meeting/editMeetingDetail.dart';
 // import 'package:maanage/employees/seeMoreEmployeedart';
 import './dashboard/dashboard.dart';
 import 'Login/CompanyReg.dart';
-import 'Profile/edit_profile.dart';
+// import 'Profile/edit_profile.dart';
 import 'Profile/profile.dart';
 import 'Project/projects.dart';
 import 'employees/seeMoreEmployee.dart';
+import 'global.dart';
 import 'meeting/Createmeeting.dart';
-import 'meeting/MeetingDetail.dart';
+// import 'meeting/MeetingDetail.dart';
 import 'package:firebase_core/firebase_core.dart';
 import './Project/AddProject.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -72,6 +76,43 @@ class MaterialMain extends StatefulWidget {
 
 class _MaterialState extends State<MaterialMain> {
   int _currentIndex = 0;
+  bool isLoading = false;
+  @override
+  void initState() {
+    EmpolyeeDetails();
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  EmpolyeeDetails() async {
+    setState(() {
+      isLoading = true;
+    });
+    var headers = {
+      'x-api-key': 'taibah123456',
+      'Cookie': 'ci_session=31f54ddc7643f3c5a1487d5346a2411a92e77e93'
+    };
+    var request = http.MultipartRequest(
+        'GET',
+        Uri.parse(
+            'https://softdigit.in/softdigits/api/Authentication/userlist/${appr_id}'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    var data = await response.stream.bytesToString();
+    Employeedata = json.decode(data);
+    if (response.statusCode == 200) {
+      print(Employeedata);
+      setState(() {
+        isLoading = false;
+      });
+      // print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
 
   final screen = [
     DashBoard(),
@@ -86,10 +127,12 @@ class _MaterialState extends State<MaterialMain> {
     var Mwidth = MediaQuery.of(context).size.width;
     var Mheight = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: <Widget>[...screen],
-        ),
+        body: isLoading == true
+            ? Center(child: CircularProgressIndicator())
+            : IndexedStack(
+                index: _currentIndex,
+                children: <Widget>[...screen],
+              ),
         bottomNavigationBar: buildMyNavBar(context)
         // NavigationBarTheme(
         //   data: NavigationBarThemeData(

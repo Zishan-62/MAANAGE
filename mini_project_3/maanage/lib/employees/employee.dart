@@ -262,12 +262,19 @@ Widget Employeess(context) {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 40,
-                          backgroundImage: NetworkImage(
-                              "https://softdigit.in/softdigits/uploads/images/users/${Employeedata['users'][index]['image']}"),
-                        ),
+                        Employeedata['users'][index]['image'] == null ||
+                                Employeedata['users'][index]['image'] == ''
+                            ? CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 40,
+                                backgroundImage:
+                                    AssetImage('assets/images/profile.png'))
+                            : CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 40,
+                                backgroundImage: NetworkImage(
+                                    "https://softdigit.in/softdigits/uploads/images/users/${Employeedata['users'][index]['image']}"),
+                              ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),

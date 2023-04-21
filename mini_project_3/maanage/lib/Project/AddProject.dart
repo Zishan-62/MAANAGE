@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:maanage/custom%20widgets/Custom_text.dart';
+import 'package:maanage/global.dart';
+import 'package:multi_select_flutter/chip_field/multi_select_chip_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+
+import '../Models/addMembersToProject.dart';
 
 class AddProject extends StatefulWidget {
   const AddProject({super.key});
@@ -12,6 +18,22 @@ class AddProjectState extends State<AddProject> {
   TextEditingController _date = TextEditingController();
   TextEditingController _dateT = TextEditingController();
 
+// Stackoverflow
+  static List<Members> _listofmembers = [
+    for (var i = 0; i < Employeedata["users"].length; i++)
+      Members(id: i + 1, name: Employeedata["users"][i]["first_name"])
+
+    // Members(id: 27, name: "Dolphin"),
+  ];
+  final _items = _listofmembers
+      .map((member) => MultiSelectItem<Members>(member, member.name!))
+      .toList();
+  //List<Animal> _selectedAnimals = [];
+  List _selectedMembers = [];
+  // List<Members> _selectedAnimals3 = [];
+  //List<Animal> _selectedAnimals4 = [];
+  // List<Members> _selectedAnimals5 = [];
+  final _multiSelectKey = GlobalKey<FormFieldState>();
   //get floatingActionButton => null;
 
   @override
@@ -81,7 +103,7 @@ class AddProjectState extends State<AddProject> {
             ),
           ),
           Container(
-            alignment: Alignment.topLeft,
+            // alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
             height: height * 0.08,
             width: width * 1,
@@ -140,7 +162,7 @@ class AddProjectState extends State<AddProject> {
             width: double.infinity,
             color: Color(0xFFF5F5F5),
             child: Row(
-              children: [
+              children: const [
                 // Align(
                 //   child: TextButton.icon(
                 //     // <-- TextButton
@@ -161,6 +183,74 @@ class AddProjectState extends State<AddProject> {
                 //   alignment: Alignment.centerLeft,
                 // ),
                 Icon(Icons.date_range),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  'Add Members to Project',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            // alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            height: height * 0.1,
+            width: double.infinity,
+            color: Color(0xFFF6F6F6),
+            child: MultiSelectChipField(
+              showHeader: false,
+              items: _items,
+              initialValue: [],
+              // title: Text("Animals"),
+              // headerColor: Colors.blue.withOpacity(0.5),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.transparent, width: 1.8),
+              ),
+              selectedChipColor: Color(0xFF3C5BFA),
+              selectedTextStyle: TextStyle(color: Colors.white),
+              onTap: (values) {
+                print(values);
+                _selectedMembers = values;
+                //_selectedAnimals4 = values;
+              },
+            ),
+          ),
+          Container(
+            // alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            height: height * 0.08,
+            width: double.infinity,
+            color: Color(0xFFF5F5F5),
+            child: Row(
+              children: const [
+                // Align(
+                //   child: TextButton.icon(
+                //     // <-- TextButton
+                //     onPressed: () {},
+                //     icon: Icon(
+                //       Icons.date_range,
+                //       size: 24,
+                //       color: Colors.black,
+                //     ),
+                //     label: Text(
+                //       'Date',
+                //       style: TextStyle(
+                //         color: Colors.black,
+                //         fontSize: 15,
+                //       ),
+                //     ),
+                //   ),
+                //   alignment: Alignment.centerLeft,
+                // ),
+                Icon(Icons.date_range),
+                SizedBox(
+                  width: 10,
+                ),
                 Text(
                   'Dates',
                   style: TextStyle(
@@ -352,15 +442,15 @@ class AddProjectState extends State<AddProject> {
           // ),
         ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF3C5BFA),
-        onPressed: () {},
-        isExtended: true,
-        child: Icon(
-          Icons.add,
-          color: Color(0xFFFFFFFF),
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Color(0xFF3C5BFA),
+      //   onPressed: () {},
+      //   isExtended: true,
+      //   child: Icon(
+      //     Icons.add,
+      //     color: Color(0xFFFFFFFF),
+      //   ),
+      // ),
       //start the floating button from here
       persistentFooterButtons: [
         Row(
@@ -391,7 +481,9 @@ class AddProjectState extends State<AddProject> {
                 //  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage() ),
                 //  },
                 onTap: () {
-                  Navigator.pushNamed(context, 'project');
+                  // Navigator.pushNamed(context, 'project');
+                  print(_selectedMembers);
+                  print(Employeedata);
                 },
               ),
             ),

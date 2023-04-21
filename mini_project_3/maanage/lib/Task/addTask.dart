@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 
-class AddProject extends StatefulWidget {
-  const AddProject({super.key});
+class AddTask extends StatefulWidget {
+  const AddTask({super.key});
 
   @override
-  State<AddProject> createState() => AddProjectState();
+  State<AddTask> createState() => _AddTaskState();
 }
 
-class AddProjectState extends State<AddProject> {
-  TextEditingController _date = TextEditingController();
-  TextEditingController _dateT = TextEditingController();
+TextEditingController _date = TextEditingController();
+TextEditingController _dateT = TextEditingController();
 
-  //get floatingActionButton => null;
-
+class _AddTaskState extends State<AddTask> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -27,7 +27,7 @@ class AddProjectState extends State<AddProject> {
         elevation: 4,
         leadingWidth: 5,
         title: Text(
-          'ADD PROJECTS',
+          'ADD TASK',
           style: TextStyle(
             fontWeight: FontWeight.w700,
             color: Color(0xFF373737),

@@ -7,6 +7,8 @@ import 'package:maanage/Login/login.dart';
 import 'package:maanage/Login/splashScreen.dart';
 // import 'package:maanage/Project.dart';
 import 'package:maanage/Project/viewProject.dart';
+import 'package:maanage/Task/addTask.dart';
+import 'package:maanage/Task/task.dart';
 // import 'package:maanage/Report.dart';
 import 'package:maanage/custom%20widgets/Custom_text.dart';
 import 'package:maanage/employees/employee.dart';
@@ -59,7 +61,8 @@ class MyApp extends StatelessWidget {
         "viewproject": (context) => ViewProject(),
         'splashScreen': (context) => Splash(),
         'profile': (context) => Profile(),
-        'editmeetdetail': (Context) => EditMeetDetail(),
+        'editmeetdetail': (context) => EditMeetDetail(),
+        'addtask': (context) => AddTask(),
       },
       initialRoute: 'splashScreen',
       // home:  Login(),
@@ -119,6 +122,7 @@ class _MaterialState extends State<MaterialMain> {
     MyEmployee(),
     ProjectPage(),
     // AddMeeting(),
+    Task(),
     Profile()
   ];
   late final ShapeBorder? indicatorShape;
@@ -257,165 +261,219 @@ class _MaterialState extends State<MaterialMain> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            height: double.infinity,
-            width: Mwidth * 0.25,
-            decoration: BoxDecoration(
-              color: _currentIndex == 0 ? Color(0xFF3C5BFA) : Colors.white,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 5,
-                ),
-                IconButton(
-                  // splashRadius: 0,
-                  padding: EdgeInsets.only(bottom: 10, right: 5),
-                  constraints: BoxConstraints(),
-                  enableFeedback: false,
-                  onPressed: () {
-                    setState(() {
-                      _currentIndex = 0;
-                    });
-                  },
-                  icon: _currentIndex == 0
-                      ? const Icon(
-                          Icons.home,
-                          color: Colors.white,
-                          size: 35,
-                        )
-                      : const Icon(
-                          Icons.home_outlined,
-                          color: Color(0xFF3C5BFA),
-                          size: 35,
-                        ),
-                ),
-                CustomText(
-                  fontWeight: FontWeight.w500,
-                  text: 'Home',
-                  textcolor:
-                      _currentIndex == 0 ? Colors.white : Color(0xFF3C5BFA),
-                )
-              ],
-            ),
-          ),
-          Container(
-            height: double.infinity,
-            width: Mwidth * 0.25,
-            decoration: BoxDecoration(
-              color: _currentIndex == 1 ? Color(0xFF3C5BFA) : Colors.white,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 5,
-                ),
-                IconButton(
-                  // splashRadius: 0,
-                  padding: EdgeInsets.only(bottom: 10, right: 5),
-                  constraints: BoxConstraints(),
-                  enableFeedback: false,
-                  onPressed: () {
-                    setState(() {
-                      _currentIndex = 1;
-                    });
-                  },
-                  icon: _currentIndex == 1
-                      ? const Icon(
-                          Icons.person_pin_rounded,
-                          color: Colors.white,
-                          size: 35,
-                        )
-                      : const Icon(
-                          Icons.people_outline_outlined,
-                          color: Color(0xFF3C5BFA),
-                          size: 35,
-                        ),
-                ),
-                CustomText(
-                  fontWeight: FontWeight.w500,
-                  text: 'Employees',
-                  textcolor:
-                      _currentIndex == 1 ? Colors.white : Color(0xFF3C5BFA),
-                )
-              ],
-            ),
-          ),
-          Container(
-            height: double.infinity,
-            width: Mwidth * 0.25,
-            decoration: BoxDecoration(
-              color: _currentIndex == 2 ? Color(0xFF3C5BFA) : Colors.white,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 5,
-                ),
-                IconButton(
-                  // splashRadius: 0,
-                  padding: EdgeInsets.only(bottom: 10, right: 5),
-                  constraints: BoxConstraints(),
-                  enableFeedback: false,
-                  onPressed: () {
-                    setState(() {
-                      _currentIndex = 2;
-                    });
-                  },
-                  icon: _currentIndex == 2
-                      ? const Icon(
-                          Icons.border_all_rounded,
-                          color: Colors.white,
-                          size: 35,
-                        )
-                      : const Icon(
-                          Icons.border_all_rounded,
-                          color: Color(0xFF3C5BFA),
-                          size: 35,
-                        ),
-                ),
-                CustomText(
-                  fontWeight: FontWeight.w500,
-                  text: 'Projects',
-                  textcolor:
-                      _currentIndex == 2 ? Colors.white : Color(0xFF3C5BFA),
-                )
-              ],
-            ),
-          ),
-          Container(
-            height: double.infinity,
-            width: Mwidth * 0.25,
-            decoration: BoxDecoration(
-                color: _currentIndex == 3 ? Color(0xFF3C5BFA) : Colors.white),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 5,
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      _currentIndex = 3;
-                    });
-                  },
-                  child: CircleAvatar(
-                    foregroundColor: Color(0xFF3C5BFA),
-                    backgroundImage: NetworkImage(
-                      'https://picsum.photos/250?image=9',
-                    ),
-                    radius: 20,
+          Flexible(
+            child: Container(
+              height: double.infinity,
+              width: Mwidth * 0.25,
+              decoration: BoxDecoration(
+                color: _currentIndex == 0 ? Color(0xFF3C5BFA) : Colors.white,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 5,
                   ),
-                ),
-              ],
+                  IconButton(
+                    // splashRadius: 0,
+                    padding: EdgeInsets.only(bottom: 10, right: 5),
+                    constraints: BoxConstraints(),
+                    enableFeedback: false,
+                    onPressed: () {
+                      setState(() {
+                        _currentIndex = 0;
+                      });
+                    },
+                    icon: _currentIndex == 0
+                        ? const Icon(
+                            Icons.home,
+                            color: Colors.white,
+                            size: 35,
+                          )
+                        : const Icon(
+                            Icons.home_outlined,
+                            color: Color(0xFF3C5BFA),
+                            size: 35,
+                          ),
+                  ),
+                  CustomText(
+                    fontWeight: FontWeight.w500,
+                    text: 'Home',
+                    textcolor:
+                        _currentIndex == 0 ? Colors.white : Color(0xFF3C5BFA),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              height: double.infinity,
+              width: Mwidth * 0.25,
+              decoration: BoxDecoration(
+                color: _currentIndex == 1 ? Color(0xFF3C5BFA) : Colors.white,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  IconButton(
+                    // splashRadius: 0,
+                    padding: EdgeInsets.only(bottom: 10, right: 5),
+                    constraints: BoxConstraints(),
+                    enableFeedback: false,
+                    onPressed: () {
+                      setState(() {
+                        _currentIndex = 1;
+                      });
+                    },
+                    icon: _currentIndex == 1
+                        ? const Icon(
+                            Icons.person_pin_rounded,
+                            color: Colors.white,
+                            size: 35,
+                          )
+                        : const Icon(
+                            Icons.people_outline_outlined,
+                            color: Color(0xFF3C5BFA),
+                            size: 35,
+                          ),
+                  ),
+                  CustomText(
+                    fontWeight: FontWeight.w500,
+                    text: 'Employees',
+                    textcolor:
+                        _currentIndex == 1 ? Colors.white : Color(0xFF3C5BFA),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              height: double.infinity,
+              width: Mwidth * 0.25,
+              decoration: BoxDecoration(
+                color: _currentIndex == 2 ? Color(0xFF3C5BFA) : Colors.white,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  IconButton(
+                    // splashRadius: 0,
+                    padding: EdgeInsets.only(bottom: 10, right: 5),
+                    constraints: BoxConstraints(),
+                    enableFeedback: false,
+                    onPressed: () {
+                      setState(() {
+                        _currentIndex = 2;
+                      });
+                    },
+                    icon: _currentIndex == 2
+                        ? const Icon(
+                            Icons.border_all_rounded,
+                            color: Colors.white,
+                            size: 35,
+                          )
+                        : const Icon(
+                            Icons.border_all_rounded,
+                            color: Color(0xFF3C5BFA),
+                            size: 35,
+                          ),
+                  ),
+                  CustomText(
+                    fontWeight: FontWeight.w500,
+                    text: 'Projects',
+                    textcolor:
+                        _currentIndex == 2 ? Colors.white : Color(0xFF3C5BFA),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              height: double.infinity,
+              width: Mwidth * 0.25,
+              decoration: BoxDecoration(
+                color: _currentIndex == 3 ? Color(0xFF3C5BFA) : Colors.white,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  IconButton(
+                    // splashRadius: 0,
+                    padding: EdgeInsets.only(bottom: 10, right: 5),
+                    constraints: BoxConstraints(),
+                    enableFeedback: false,
+                    onPressed: () {
+                      setState(() {
+                        _currentIndex = 3;
+                      });
+                    },
+                    icon: _currentIndex == 3
+                        ? const Icon(
+                            Icons.task,
+                            color: Colors.white,
+                            size: 35,
+                          )
+                        : const Icon(
+                            Icons.task,
+                            color: Color(0xFF3C5BFA),
+                            size: 35,
+                          ),
+                  ),
+                  CustomText(
+                    fontWeight: FontWeight.w500,
+                    text: 'Task',
+                    textcolor:
+                        _currentIndex == 3 ? Colors.white : Color(0xFF3C5BFA),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              height: double.infinity,
+              width: Mwidth * 0.25,
+              decoration: BoxDecoration(
+                  color: _currentIndex == 4 ? Color(0xFF3C5BFA) : Colors.white),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _currentIndex = 4;
+                      });
+                    },
+                    child: CircleAvatar(
+                      foregroundColor: Color(0xFF3C5BFA),
+                      backgroundImage: NetworkImage(
+                        'https://picsum.photos/250?image=9',
+                      ),
+                      radius: 20,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

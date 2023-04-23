@@ -1,43 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
-import 'package:maanage/custom%20widgets/Custom_text.dart';
-import 'package:maanage/global.dart';
-import 'package:multi_select_flutter/chip_field/multi_select_chip_field.dart';
-import 'package:multi_select_flutter/util/multi_select_item.dart';
 
-import '../Models/addMembersToProject.dart';
-
-class AddProject extends StatefulWidget {
-  const AddProject({super.key});
+class AddTask extends StatefulWidget {
+  const AddTask({super.key});
 
   @override
-  State<AddProject> createState() => AddProjectState();
+  State<AddTask> createState() => _AddTaskState();
 }
 
-class AddProjectState extends State<AddProject> {
-  TextEditingController _date = TextEditingController();
-  TextEditingController _dateT = TextEditingController();
+TextEditingController _date = TextEditingController();
+TextEditingController _dateT = TextEditingController();
+bool attachvisible = false;
 
-// Stackoverflow
-  static List<Members> _listofmembers = [
-    for (var i = 0; i < Employeedata["users"].length; i++)
-      Members(id: i + 1, name: Employeedata["users"][i]["first_name"])
-
-    // Members(id: 27, name: "Dolphin"),
-  ];
-  final _items = _listofmembers
-      .map((member) => MultiSelectItem<Members>(member, member.name!))
-      .toList();
-  //List<Animal> _selectedAnimals = [];
-  List _selectedMembers = [];
-  // List<Members> _selectedAnimals3 = [];
-  //List<Animal> _selectedAnimals4 = [];
-  // List<Members> _selectedAnimals5 = [];
-  final _multiSelectKey = GlobalKey<FormFieldState>();
-  //get floatingActionButton => null;
-  //for attachment
-  bool attachvisible = false;
-
+class _AddTaskState extends State<AddTask> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -51,7 +28,7 @@ class AddProjectState extends State<AddProject> {
         elevation: 4,
         leadingWidth: 5,
         title: Text(
-          'ADD PROJECTS',
+          'ADD TASK',
           style: TextStyle(
             fontWeight: FontWeight.w700,
             color: Color(0xFF373737),
@@ -101,59 +78,6 @@ class AddProjectState extends State<AddProject> {
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 hintText: 'Enter Project name',
-              ),
-            ),
-          ),
-          Container(
-            // alignment: Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-            height: height * 0.08,
-            width: width * 1,
-            color: Color(0xFFF5F5F5),
-            child: Align(
-              child: TextButton.icon(
-                // <-- TextButton
-                onPressed: null,
-                icon: Icon(
-                  Icons.notes,
-                  size: 24,
-                  color: Colors.black,
-                ),
-                label: Text(
-                  'Discription',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-              alignment: Alignment.centerLeft,
-            ),
-          ),
-          Container(
-            // alignment: Alignment.topLeft,
-            margin: EdgeInsets.only(left: 10, top: 10, bottom: 25, right: 10),
-            // height: height * 0.22,
-            width: double.infinity,
-            color: Color(0xFFFFFFFF),
-            child: TextFormField(
-              minLines: 3,
-              maxLines: null,
-              style: TextStyle(
-                color: Color(0xFF3C5BFA),
-              ),
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                hintText: 'Enter Discription',
               ),
             ),
           ),
@@ -406,76 +330,60 @@ class AddProjectState extends State<AddProject> {
                 ]),
               )),
           SizedBox(height: height * 0.02),
+
           Container(
-            // alignment: Alignment.topLeft,
+            alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
             height: height * 0.08,
-            width: double.infinity,
+            width: width * 1,
             color: Color(0xFFF5F5F5),
-            child: Row(
-              children: const [
-                // Align(
-                //   child: TextButton.icon(
-                //     // <-- TextButton
-                //     onPressed: () {},
-                //     icon: Icon(
-                //       Icons.date_range,
-                //       size: 24,
-                //       color: Colors.black,
-                //     ),
-                //     label: Text(
-                //       'Date',
-                //       style: TextStyle(
-                //         color: Colors.black,
-                //         fontSize: 15,
-                //       ),
-                //     ),
-                //   ),
-                //   alignment: Alignment.centerLeft,
-                // ),
-                Icon(Icons.date_range),
-                SizedBox(
-                  width: 10,
+            child: Align(
+              child: TextButton.icon(
+                // <-- TextButton
+                onPressed: null,
+                icon: Icon(
+                  Icons.notes,
+                  size: 24,
+                  color: Colors.black,
                 ),
-                Text(
-                  'Add Members to Project',
+                label: Text(
+                  'Discription',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500),
+                    color: Colors.black,
+                    fontSize: 15,
+                  ),
                 ),
-              ],
+              ),
+              alignment: Alignment.centerLeft,
             ),
           ),
-
           Container(
             // alignment: Alignment.topLeft,
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-            height: height * 0.1,
+            margin: EdgeInsets.only(left: 10, top: 10, bottom: 25, right: 10),
+            // height: height * 0.22,
             width: double.infinity,
-            color: Color(0xFFF6F6F6),
-            child: MultiSelectChipField(
-              showHeader: false,
-              items: _items,
-              initialValue: [],
-              // title: Text("Animals"),
-              // headerColor: Colors.blue.withOpacity(0.5),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.transparent, width: 1.8),
+            color: Color(0xFFFFFFFF),
+            child: TextFormField(
+              minLines: 3,
+              maxLines: null,
+              style: TextStyle(
+                color: Color(0xFF3C5BFA),
               ),
-              selectedChipColor: Color(0xFF3C5BFA),
-              selectedTextStyle: TextStyle(color: Colors.white),
-              onTap: (values) {
-                print(values);
-                _selectedMembers = values;
-                //_selectedAnimals4 = values;
-              },
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xfff4f4f4)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                hintText: 'Enter Discription',
+              ),
             ),
           ),
-          SizedBox(
-            height: height * 0.02,
-          ),
-
           Container(
             // alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -483,7 +391,7 @@ class AddProjectState extends State<AddProject> {
             width: double.infinity,
             color: Color(0xFFF5F5F5),
             child: Row(
-              children: const [
+              children: [
                 // Align(
                 //   child: TextButton.icon(
                 //     // <-- TextButton
@@ -504,9 +412,6 @@ class AddProjectState extends State<AddProject> {
                 //   alignment: Alignment.centerLeft,
                 // ),
                 Icon(Icons.date_range),
-                SizedBox(
-                  width: 10,
-                ),
                 Text(
                   'Dates',
                   style: TextStyle(
@@ -698,15 +603,15 @@ class AddProjectState extends State<AddProject> {
           // ),
         ]),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Color(0xFF3C5BFA),
-      //   onPressed: () {},
-      //   isExtended: true,
-      //   child: Icon(
-      //     Icons.add,
-      //     color: Color(0xFFFFFFFF),
-      //   ),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF3C5BFA),
+        onPressed: () {},
+        isExtended: true,
+        child: Icon(
+          Icons.add,
+          color: Color(0xFFFFFFFF),
+        ),
+      ),
       //start the floating button from here
       persistentFooterButtons: [
         Row(
@@ -737,9 +642,7 @@ class AddProjectState extends State<AddProject> {
                 //  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage() ),
                 //  },
                 onTap: () {
-                  // Navigator.pushNamed(context, 'project');
-                  print(_selectedMembers);
-                  print(Employeedata);
+                  Navigator.pushNamed(context, 'project');
                 },
               ),
             ),

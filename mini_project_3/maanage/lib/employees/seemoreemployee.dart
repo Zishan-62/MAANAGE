@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../global.dart';
+
 class MoreEmployee extends StatefulWidget {
   const MoreEmployee({super.key});
 
@@ -54,7 +56,7 @@ class _MoreEmployeeState extends State<MoreEmployee> {
                         textAlign: TextAlign.left,
                       ),
                       Text(
-                        '05',
+                        Employeedata['users'].length.toString(),
                         style: TextStyle(
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.bold),
@@ -73,7 +75,7 @@ class _MoreEmployeeState extends State<MoreEmployee> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2),
-                          itemCount: 5,
+                          itemCount: Employeedata['users'].length,
                           itemBuilder: (BuildContext context, int index) {
                             return Card(
                               shape: RoundedRectangleBorder(
@@ -85,18 +87,30 @@ class _MoreEmployeeState extends State<MoreEmployee> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   children: [
-                                    CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      radius: 40,
-                                      backgroundImage: AssetImage(image[index]),
-                                    ),
+                                    Employeedata['users'][index]['image'] ==
+                                                null ||
+                                            Employeedata['users'][index]
+                                                    ['image'] ==
+                                                ''
+                                        ? CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            radius: 40,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/profile.png'))
+                                        : CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            radius: 40,
+                                            backgroundImage: NetworkImage(
+                                                "https://softdigit.in/softdigits/uploads/images/users/${Employeedata['users'][index]['image']}"),
+                                          ),
                                     SizedBox(
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.02,
                                     ),
                                     Text(
-                                      employee[index],
+                                      Employeedata['users'][index]
+                                          ['first_name'],
                                       style: TextStyle(
                                         fontFamily: "Montserrat",
                                         fontSize: 14,
@@ -110,7 +124,7 @@ class _MoreEmployeeState extends State<MoreEmployee> {
                                               0.01,
                                     ),
                                     Text(
-                                      'Developer',
+                                      Employeedata['users'][index]['role'],
                                       style: TextStyle(
                                         fontFamily: "Montserrat",
                                         fontSize: 10,

@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:maanage/custom%20widgets/Custom_text.dart';
 import 'package:maanage/employees/add_employees.dart';
+import 'package:maanage/global.dart';
 
 class MyEmployee extends StatefulWidget {
   const MyEmployee({super.key});
@@ -249,7 +250,7 @@ Widget Employeess(context) {
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2),
-              itemCount: 4,
+              itemCount: Employeedata['users'].length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   shape: RoundedRectangleBorder(
@@ -261,16 +262,24 @@ Widget Employeess(context) {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 40,
-                          backgroundImage: AssetImage(image[index]),
-                        ),
+                        Employeedata['users'][index]['image'] == null ||
+                                Employeedata['users'][index]['image'] == ''
+                            ? CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 40,
+                                backgroundImage:
+                                    AssetImage('assets/images/profile.png'))
+                            : CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 40,
+                                backgroundImage: NetworkImage(
+                                    "https://softdigit.in/softdigits/uploads/images/users/${Employeedata['users'][index]['image']}"),
+                              ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
                         Text(
-                          employee[index],
+                          Employeedata['users'][index]['first_name'],
                           style: TextStyle(
                             fontFamily: "Montserrat",
                             fontSize: 14,
@@ -282,7 +291,7 @@ Widget Employeess(context) {
                           height: MediaQuery.of(context).size.height * 0.01,
                         ),
                         Text(
-                          'Developer',
+                          Employeedata['users'][index]['role'],
                           style: TextStyle(
                             fontFamily: "Montserrat",
                             fontSize: 10,

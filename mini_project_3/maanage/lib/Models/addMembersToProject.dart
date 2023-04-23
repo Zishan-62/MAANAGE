@@ -1,5 +1,5 @@
 class Members {
-  final String? id;
+  final int? id;
   final String? name;
 
   Members({

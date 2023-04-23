@@ -603,15 +603,15 @@ class _AddTaskState extends State<AddTask> {
           // ),
         ]),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Color(0xFF3C5BFA),
-      //   onPressed: () {},
-      //   isExtended: true,
-      //   child: Icon(
-      //     Icons.add,
-      //     color: Color(0xFFFFFFFF),
-      //   ),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF3C5BFA),
+        onPressed: () {},
+        isExtended: true,
+        child: Icon(
+          Icons.add,
+          color: Color(0xFFFFFFFF),
+        ),
+      ),
       //start the floating button from here
       persistentFooterButtons: [
         Row(
@@ -642,7 +642,7 @@ class _AddTaskState extends State<AddTask> {
                 //  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage() ),
                 //  },
                 onTap: () {
-                  // Navigator.pushNamed(context, 'project');
+                  Navigator.pushNamed(context, 'project');
                 },
               ),
             ),

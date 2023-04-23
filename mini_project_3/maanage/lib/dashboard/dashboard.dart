@@ -21,7 +21,6 @@ import '../global.dart';
 import '../meeting/Createmeeting.dart';
 import '../meeting/meeting.dart';
 
-
 // ignore: camel_case_types
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -190,7 +189,6 @@ class _DashBoardState extends State<DashBoard> {
 
 // Employee data
   // var uplode;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -318,22 +316,45 @@ class _DashBoardState extends State<DashBoard> {
                                       onPressed: () {
                                         (!started) ? start() : stop();
                                         setState(() {
-                                          if (isClicked) {
-                                            print(_currentAddress);
-                                            isClicked = !isClicked;
-                                            entry1 = entry[1];
-                                            starttimer = formattedTime;
-                                            done_meeting_color =
-                                                Color(0xFF00A410);
-                                            left_meeting_color = Colors.red;
-                                          } else {
-                                            _color = Colors.red;
-                                            isClicked = !isClicked;
-                                            entry1 = entry[0];
-                                            stoptimer = formattedTime;
+                                          if (starttimer == "" ||
+                                              starttimer == "00:00" ||
+                                              starttimer == null) {
+                                            if (isClicked) {
+                                              print(_currentAddress);
+                                              isClicked = !isClicked;
+                                              entry1 = entry[1];
+                                              starttimer = formattedTime;
+                                              done_meeting_color =
+                                                  Color(0xFF00A410);
+                                              left_meeting_color = Colors.red;
+                                            } else {
+                                              _color = Colors.red;
+                                              isClicked = !isClicked;
+                                              entry1 = entry[0];
+                                              stoptimer = formattedTime;
 
-                                            done_meeting_color = Colors.white;
-                                            left_meeting_color = Colors.white;
+                                              done_meeting_color = Colors.white;
+                                              left_meeting_color = Colors.white;
+                                            }
+                                          } else {
+                                            if (isClicked) {
+                                              print(_currentAddress);
+                                              isClicked = !isClicked;
+                                              entry1 = entry[1];
+                                              stoptimer = "-- --";
+                                              // starttimer = formattedTime;
+                                              done_meeting_color =
+                                                  Color(0xFF00A410);
+                                              left_meeting_color = Colors.red;
+                                            } else {
+                                              _color = Colors.red;
+                                              isClicked = !isClicked;
+                                              entry1 = entry[0];
+                                              stoptimer = formattedTime;
+
+                                              done_meeting_color = Colors.white;
+                                              left_meeting_color = Colors.white;
+                                            }
                                           }
                                         });
                                       },

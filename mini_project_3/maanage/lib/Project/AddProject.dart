@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:maanage/custom%20widgets/Custom_text.dart';
 import 'package:maanage/global.dart';
 import 'package:multi_select_flutter/chip_field/multi_select_chip_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
-
+import 'package:http/http.dart' as http;
 import '../Models/addMembersToProject.dart';
 
 class AddProject extends StatefulWidget {
@@ -15,13 +17,12 @@ class AddProject extends StatefulWidget {
 }
 
 class AddProjectState extends State<AddProject> {
-  TextEditingController _date = TextEditingController();
-  TextEditingController _dateT = TextEditingController();
-
 // Stackoverflow
   static List<Members> _listofmembers = [
     for (var i = 0; i < Employeedata["users"].length; i++)
-      Members(id: i + 1, name: Employeedata["users"][i]["first_name"])
+      Members(
+          id: Employeedata["users"][i]["u_id"],
+          name: Employeedata["users"][i]["first_name"])
 
     // Members(id: 27, name: "Dolphin"),
   ];
@@ -34,9 +35,13 @@ class AddProjectState extends State<AddProject> {
   //List<Animal> _selectedAnimals4 = [];
   // List<Members> _selectedAnimals5 = [];
   final _multiSelectKey = GlobalKey<FormFieldState>();
+  TextEditingController projectName = TextEditingController();
+  TextEditingController projectDesc = TextEditingController();
+  TextEditingController startDate = TextEditingController();
+  TextEditingController endDate = TextEditingController();
+  var project_id;
   //get floatingActionButton => null;
-  //for attachment
-  bool attachvisible = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +91,7 @@ class AddProjectState extends State<AddProject> {
             width: width * 0.97,
             color: Color(0xFFFFFFFF),
             child: TextField(
+              controller: projectName,
               style: TextStyle(
                 color: Color(0xFF3C5BFA),
               ),
@@ -530,7 +536,7 @@ class AddProjectState extends State<AddProject> {
                       color: Color(0xFF3C5BFA),
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w500),
-                  controller: _date,
+                  controller: startDate,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xfff4f4f4)),
@@ -555,12 +561,12 @@ class AddProjectState extends State<AddProject> {
                     DateTime? pickeddate = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
+                        firstDate: DateTime.now(),
                         lastDate: DateTime(2100));
 
                     if (pickeddate != null) {
                       setState(() {
-                        _date.text =
+                        startDate.text =
                             DateFormat('dd-MM-yyyy').format(pickeddate);
                       });
                     }
@@ -578,7 +584,7 @@ class AddProjectState extends State<AddProject> {
                       color: Color(0xFF3C5BFA),
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w500),
-                  controller: _dateT,
+                  controller: endDate,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xfff4f4f4)),
@@ -608,7 +614,7 @@ class AddProjectState extends State<AddProject> {
 
                     if (pickeddate != null) {
                       setState(() {
-                        _dateT.text =
+                        endDate.text =
                             DateFormat('dd-MM-yyyy').format(pickeddate);
                       });
                     }
@@ -737,6 +743,7 @@ class AddProjectState extends State<AddProject> {
                 //  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage() ),
                 //  },
                 onTap: () {
+                  addProject();
                   // Navigator.pushNamed(context, 'project');
                   print(_selectedMembers);
                   print(Employeedata);

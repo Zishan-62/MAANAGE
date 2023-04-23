@@ -41,34 +41,7 @@ class AddProjectState extends State<AddProject> {
   TextEditingController endDate = TextEditingController();
   var project_id;
   //get floatingActionButton => null;
-  Future addProject() async {
-    var headers = {
-      'X-API-KEY': 'taibah123456',
-      'Cookie': 'ci_session=3f45d6d848398789f146fbb047e7f90b3b89608e'
-    };
-    var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(
-            'https://softdigit.in/softdigits/project_enq/ProjectController/project'));
-    request.fields.addAll({
-      'name': projectName.text,
-      'description': projectDesc.text,
-      'start_date': startDate.text,
-      'due_date': endDate.text
-    });
 
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-    var data = await response.stream.bytesToString();
-    var data2 = json.decode(data);
-    if (response.statusCode == 200) {
-      print(data2);
-      // print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +164,255 @@ class AddProjectState extends State<AddProject> {
             ),
           ),
           Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.fromLTRB(20, 15, 10, 10),
+            height: height * 0.08,
+            width: width * 1,
+            color: Color(0xFFF5F5F5),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.,
+              children: [
+                Icon(Icons.attachment_outlined),
+                Spacer(
+                  flex: 1,
+                ),
+                Align(
+                  child: Text(
+                    'Attachments',
+                    style: TextStyle(
+                      color: Color(0xFF373737),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  alignment: Alignment.centerLeft,
+                ),
+                Spacer(
+                  flex: 20,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        attachvisible = !attachvisible;
+                      });
+                    },
+                    icon: Icon(Icons.add),
+                    color: Color(0xFF3C5BFA),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: height * 0.02,
+          ),
+          Visibility(
+              visible: attachvisible,
+              child: Container(
+                // padding: EdgeInsets.all(8),
+                // height: height * 0.3,
+                child: Column(children: [
+                  AppBar(
+                    leading: Icon(Icons.attachment_outlined),
+                    title: Text(
+                      "Attachments",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    actions: [
+                      Flexible(
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              attachvisible = !attachvisible;
+                            });
+                          },
+                          icon: Icon(Icons.cancel),
+                          // iconSize: 1,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                    // centerTitle: true,
+                    // leadingWidth: 20,
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              height: height * 0.08,
+                              width: width * 0.4,
+                              decoration: BoxDecoration(
+                                color: Color(0xfff4f4f4),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: InkWell(
+                                child: Align(
+                                    child: Text(
+                                      'Upload Images',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15),
+                                    ),
+                                    alignment: Alignment.center),
+                                onTap: () {},
+                              ),
+                            ),
+                            Container(
+                              height: height * 0.08,
+                              width: width * 0.4,
+                              decoration: BoxDecoration(
+                                color: Color(0xfff4f4f4),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: InkWell(
+                                child: Align(
+                                    child: Text(
+                                      'Google Drive',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15),
+                                    ),
+                                    alignment: Alignment.center),
+                                onTap: () {},
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Align(
+                            child: Text(
+                              "Attach a Link",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w500),
+                            ),
+                            alignment: Alignment.centerLeft,
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 25),
+                          height: height * 0.08,
+                          width: width * 0.97,
+                          color: Color(0xFFFFFFFF),
+                          child: TextField(
+                            style: TextStyle(
+                              color: Color(0xFF3C5BFA),
+                            ),
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xfff4f4f4)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xfff4f4f4)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              hintText: 'Paste any link here',
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Align(
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Link Name",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  " Optional)",
+                                  style: TextStyle(
+                                      color: Color(0xffa8a8a8),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            alignment: Alignment.centerLeft,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 25),
+                          height: height * 0.08,
+                          width: width * 0.97,
+                          color: Color(0xFFFFFFFF),
+                          child: TextField(
+                            style: TextStyle(
+                              color: Color(0xFF3C5BFA),
+                            ),
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xfff4f4f4)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xfff4f4f4)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.08,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: height * 0.08,
+                            width: width * 0.35,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF3C5BFA),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: InkWell(
+                              child: Align(
+                                  child: Text(
+                                    'Attach',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
+                                  alignment: Alignment.center),
+                              onTap: () {},
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+              )),
+          SizedBox(height: height * 0.02),
+          Container(
             // alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
             height: height * 0.08,
@@ -231,6 +453,7 @@ class AddProjectState extends State<AddProject> {
               ],
             ),
           ),
+
           Container(
             // alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -255,6 +478,10 @@ class AddProjectState extends State<AddProject> {
               },
             ),
           ),
+          SizedBox(
+            height: height * 0.02,
+          ),
+
           Container(
             // alignment: Alignment.topLeft,
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),

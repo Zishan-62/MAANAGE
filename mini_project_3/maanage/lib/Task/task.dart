@@ -71,6 +71,7 @@ class _TaskState extends State<Task> {
         ),
       ),
     ];
+    final task = ["Web building", "Design", "Appbar Correction"];
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset(
@@ -141,28 +142,37 @@ class _TaskState extends State<Task> {
                             //   ),
                             // ),
                             Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Image.asset('assets/images/office.png'),
+                                Flexible(
+                                    child: Image.asset(
+                                        'assets/images/office.png')),
                                 SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.1,
                                 ),
-                                Text(
-                                  "Goal",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Montserrat",
-                                      color: Color(0xFF3C5BFA)),
+                                Flexible(
+                                  // flex: 1,
+                                  child: Text(
+                                    task[index],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Montserrat",
+                                        color: Color(0xFF3C5BFA)),
+                                  ),
                                 ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.more_vert),
-                                  color: Color(0xFF3C5BFA),
+                                // SizedBox(
+                                //   width:
+                                //       MediaQuery.of(context).size.width * 0,
+                                // ),
+                                Flexible(
+                                  // flex: 2,
+                                  fit: FlexFit.tight,
+                                  child: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.more_vert),
+                                    color: Color(0xFF3C5BFA),
+                                  ),
                                 )
                               ],
                             ),

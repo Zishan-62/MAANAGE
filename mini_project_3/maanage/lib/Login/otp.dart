@@ -113,10 +113,20 @@ class _OtpPageState extends State<OtpPage> {
                         await auth.signInWithCredential(credential);
                         sharedprf(widget.data);
                         first_name = widget.data['data']['first_name'];
-                        appr_id=widget.data['data']['admin_id'];
+                        appr_id = widget.data['data']['admin_id'];
+                        u_id = widget.data['data']['u_id'];
+                        if (widget.data['data']['role'] != "3" ||
+                            widget.data['data']['role'] != 3) {
+                          print("if me gaya");
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, '/', (route) => false);
+                        }
                         // Navigator.pushNamed(context, 'login')
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, 'companyinfo', (route) => false);
+                        else {
+                          print("else me gaya");
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, 'companyinfo', (route) => false);
+                        }
                       } catch (e) {
                         print('Wrong OTP');
                       }
@@ -164,5 +174,7 @@ class _OtpPageState extends State<OtpPage> {
     await pref.setString('email', details['data']['email']);
     await pref.setString('phone', details['data']['phone']);
     await pref.setString('admin', details['data']['admin_id']);
+    await pref.setString('u_id', details['data']['u_id']);
+    await pref.setString('image', details['data']['image']);
   }
 }

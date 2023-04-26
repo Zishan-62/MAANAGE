@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:maanage/custom%20widgets/Custom_text.dart';
 import 'package:maanage/global.dart';
 import 'package:multi_select_flutter/chip_field/multi_select_chip_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
-
+import 'package:http/http.dart' as http;
 import '../Models/addMembersToProject.dart';
 
 class AddProject extends StatefulWidget {
@@ -17,11 +19,15 @@ class AddProject extends StatefulWidget {
 class AddProjectState extends State<AddProject> {
   TextEditingController _date = TextEditingController();
   TextEditingController _dateT = TextEditingController();
-
+  TextEditingController projectName = TextEditingController();
+  TextEditingController desc = TextEditingController();
+  var project_id;
 // Stackoverflow
   static List<Members> _listofmembers = [
     for (var i = 0; i < Employeedata["users"].length; i++)
-      Members(id: i + 1, name: Employeedata["users"][i]["first_name"])
+      Members(
+          id: Employeedata["users"][i]["u_id"],
+          name: Employeedata["users"][i]["first_name"])
 
     // Members(id: 27, name: "Dolphin"),
   ];
@@ -37,6 +43,63 @@ class AddProjectState extends State<AddProject> {
   //get floatingActionButton => null;
   //for attachment
   bool attachvisible = false;
+  Future addProjectAPI() async {
+    var headers = {'X-API-KEY': 'taibah123456'};
+    var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            'https://softdigit.in/softdigits/project_enq/ProjectController/project'));
+    request.fields.addAll({
+      'name': projectName.text,
+      'description': desc.text,
+      'start_date': _date.text,
+      'due_date': _dateT.text
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    var data = await response.stream.bytesToString();
+    var data2 = json.decode(data);
+    if (response.statusCode == 200) {
+      project_id = await data2['data']['project_id'];
+      print(project_id);
+      // print(await response.stream.bytesToString());
+      // print(data2);
+
+      for (var member in _selectedMembers) {
+        await addMembersToProject(member.id);
+      }
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  Future addMembersToProject(String member_id) async {
+    var headers = {
+      'X-API-KEY': 'taibah123456',
+      'Cookie': 'ci_session=bfe6f4fa69c006c8d83b8d28d62244556b485abc'
+    };
+    var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            'https://softdigit.in/softdigits/project_enq/MemberController/member'));
+    request.fields.addAll(
+        {'emp_id': member_id, 'project_id': project_id, 'status': "Project"});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Project Successfully added')));
+      Navigator.pop(context);
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +149,7 @@ class AddProjectState extends State<AddProject> {
             width: width * 0.97,
             color: Color(0xFFFFFFFF),
             child: TextField(
+              controller: projectName,
               style: TextStyle(
                 color: Color(0xFF3C5BFA),
               ),
@@ -137,6 +201,7 @@ class AddProjectState extends State<AddProject> {
             width: double.infinity,
             color: Color(0xFFFFFFFF),
             child: TextFormField(
+              controller: desc,
               minLines: 3,
               maxLines: null,
               style: TextStyle(
@@ -737,9 +802,15 @@ class AddProjectState extends State<AddProject> {
                 //  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage() ),
                 //  },
                 onTap: () {
+                  if (_selectedMembers.isNotEmpty) {
+                    addProjectAPI();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Please select atleast one member')));
+                  }
                   // Navigator.pushNamed(context, 'project');
                   print(_selectedMembers);
-                  print(Employeedata);
+                  // print(Employeedata);
                 },
               ),
             ),
@@ -769,7 +840,11 @@ class AddProjectState extends State<AddProject> {
                   //  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage() ),
                   //  },
                   onTap: () {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
+
+                    for (var member in _selectedMembers) {
+                      print(member.id);
+                    }
                   },
                 )),
           ],

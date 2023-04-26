@@ -24,7 +24,7 @@ class TeamLeaders extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 14.0, top: 8),
                     child: CustomText(
-                      text: 'Team Leaders',
+                      text: 'Team Members',
                       textcolor: Color(0xFF3C5BFA),
                       fontWeight: FontWeight.w600,
                       fontSize: 14,

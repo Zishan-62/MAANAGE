@@ -27,6 +27,9 @@ class _SplashState extends State<Splash> {
     String? a = pref.getString('fname');
     first_name = pref.getString('fname');
     appr_id = pref.getString('admin');
+    u_id = pref.getString('u_id');
+    profile_image = pref.getString('image');
+
     String? b = pref.getString('lname');
     String? c = pref.getString('phone');
     String? d = pref.getString('email');

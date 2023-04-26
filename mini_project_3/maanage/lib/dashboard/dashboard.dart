@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import '../custom widgets/Custom_text.dart';
 import '../custom widgets/custom_container.dart';
+import 'package:http/http.dart' as http;
 // import '../meeting/Addmeeting.dart';
 import '../global.dart';
 import '../meeting/Createmeeting.dart';
@@ -51,6 +52,8 @@ class _DashBoardState extends State<DashBoard> {
   Position? _currentPosition;
   bool isWeatherClick = false;
   bool isLocationClick = false;
+  String attendace_in = "in";
+  String attendace_out = "out";
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -171,6 +174,30 @@ class _DashBoardState extends State<DashBoard> {
     });
   }
 
+// attendance api
+  Future attendanceApi(String check) async {
+    var headers = {
+      'x-api-key': 'taibah123456',
+      'Cookie': 'ci_session=6e23b949272f89aa2216869f2d65b78166c9b7e8'
+    };
+    var request = http.MultipartRequest('POST',
+        Uri.parse('https://softdigit.in/softdigits/api/Absent/attendance'));
+    request.fields.addAll(
+        {'key': u_id, 'field_name': 'office', 'q': check, 'admin_id': appr_id});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Clocked ${check} successfully')));
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
   // Creating the stop
   void stop() {
     timer!.cancel();
@@ -204,6 +231,9 @@ class _DashBoardState extends State<DashBoard> {
               _getCurrentPosition();
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text(_currentAddress)));
+              setState(() {
+                address = _currentAddress;
+              });
             },
             child: Row(
               // ignore: prefer_const_literals_to_create_immutables
@@ -231,6 +261,7 @@ class _DashBoardState extends State<DashBoard> {
           InkWell(
               onTap: () {
                 removeData();
+                // print(u_id);
                 // print(appr_id);
               },
               child: Image.asset('assets/images/coolicon.png')),
@@ -327,6 +358,11 @@ class _DashBoardState extends State<DashBoard> {
                                               done_meeting_color =
                                                   Color(0xFF00A410);
                                               left_meeting_color = Colors.red;
+                                              attendanceApi(attendace_in);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          'Clocked in successfully')));
                                             } else {
                                               _color = Colors.red;
                                               isClicked = !isClicked;
@@ -335,6 +371,7 @@ class _DashBoardState extends State<DashBoard> {
 
                                               done_meeting_color = Colors.white;
                                               left_meeting_color = Colors.white;
+                                              print("idhar hai me");
                                             }
                                           } else {
                                             if (isClicked) {
@@ -351,9 +388,11 @@ class _DashBoardState extends State<DashBoard> {
                                               isClicked = !isClicked;
                                               entry1 = entry[0];
                                               stoptimer = formattedTime;
+                                              attendanceApi(attendace_out);
 
                                               done_meeting_color = Colors.white;
                                               left_meeting_color = Colors.white;
+                                              print("idhar hai me 22");
                                             }
                                           }
                                         });
@@ -584,7 +623,81 @@ class _DashBoardState extends State<DashBoard> {
             ),
             // 3rd column chalu hoga team leaders wala
 
-            TeamLeaders(),
+            Card(
+                margin: EdgeInsets.only(right: 10, left: 10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // 3rd column ka top wala
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 14.0, top: 8),
+                            child: CustomText(
+                              text: 'Team Members',
+                              textcolor: Color(0xFF3C5BFA),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: MediaQuery.of(context).size.width * 0.04,
+                                top:
+                                    MediaQuery.of(context).size.height * 0.004),
+                            child: CustomText(
+                              text: Employeedata['users'].length.toString(),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: <Widget>[
+                              for (var i = 0;
+                                  i < Employeedata['users'].length;
+                                  i++)
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 7, top: 7, right: 7),
+                                  child: Employeedata['users'][i]["image"] ==
+                                              null ||
+                                          Employeedata['users'][i]["image"] ==
+                                              ""
+                                      ? CircleAvatar(
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.04,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/profile.png'),
+                                        )
+                                      : CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              "https://softdigit.in/softdigits/uploads/images/users/${Employeedata['users'][i]["image"]}"),
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.04,
+                                        ),
+                                )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.03,
             ),

@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
             ),
       ),
       routes: {
+        '/': (context) => MaterialMain(),
         'login': (context) => Login(),
         'companyinfo': (context) => CompanyReg(),
         'createmeeting': (context) => CreateMeeting(),
@@ -464,13 +465,18 @@ class _MaterialState extends State<MaterialMain> {
                         _currentIndex = 4;
                       });
                     },
-                    child: CircleAvatar(
-                      foregroundColor: Color(0xFF3C5BFA),
-                      backgroundImage: NetworkImage(
-                        'https://picsum.photos/250?image=9',
-                      ),
-                      radius: 20,
-                    ),
+                    child: profile_image == null || profile_image == ""
+                        ? CircleAvatar(
+                            backgroundImage:
+                                AssetImage('assets/images/profile.png'),
+                          )
+                        : CircleAvatar(
+                            foregroundColor: Color(0xFF3C5BFA),
+                            backgroundImage: NetworkImage(
+                              'https://picsum.photos/250?image=9',
+                            ),
+                            radius: 20,
+                          ),
                   ),
                 ],
               ),

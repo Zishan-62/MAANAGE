@@ -33,19 +33,19 @@ class _LoginAppBarState extends State<Login> {
       'x-api-key': 'taibah123456',
       'Cookie': 'ci_session=b7168d388478fd9c66906f30c7bd2295da3ec528'
     };
-    var request =  http.MultipartRequest('POST',
+    var request = http.MultipartRequest('POST',
         Uri.parse('https://softdigit.in/softdigits/api/Login/no_login'));
     request.fields.addAll({'mobile_no': '${countrycode.text + phone}'});
 
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
- var data2 ;
-      var data=await response.stream.bytesToString();
-      data2=await json.decode(data);
+    var data2;
+    var data = await response.stream.bytesToString();
+    data2 = await json.decode(data);
     if (response.statusCode == 200) {
       // print(await response.stream.bytesToString());
-     
+
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: '${countrycode.text + phone}',
         verificationCompleted: (PhoneAuthCredential credential) {
@@ -75,7 +75,12 @@ class _LoginAppBarState extends State<Login> {
           isLoading = false;
           // sharedprf(data2);
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => OtpPage(data: data2,phoneno:'${countrycode.text + phone}',)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => OtpPage(
+                        data: data2,
+                        phoneno: '${countrycode.text + phone}',
+                      )));
           setState(() {
             isLoading = false;
           });
@@ -168,6 +173,7 @@ class _LoginAppBarState extends State<Login> {
                     SizedBox(
                         width: MediaQuery.of(context).size.width * 0.2,
                         child: TextFormField(
+                          // maxLen44
                           style: TextStyle(
                               color: Color(0xFF3C5BFA),
                               fontFamily: "Montserrat",

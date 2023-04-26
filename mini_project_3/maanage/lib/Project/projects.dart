@@ -10,6 +10,7 @@ class ProjectPage extends StatefulWidget {
 }
 
 class _ProjectPageState extends State<ProjectPage> {
+  
   @override
   Widget build(BuildContext context) {
     final label = [
@@ -71,6 +72,8 @@ class _ProjectPageState extends State<ProjectPage> {
         ),
       ),
     ];
+    final project = ["Laundry Go", "Maanage", "Keka"];
+
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset(
@@ -141,28 +144,35 @@ class _ProjectPageState extends State<ProjectPage> {
                             //   ),
                             // ),
                             Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Image.asset('assets/images/office.png'),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.1,
-                                ),
-                                Text(
-                                  "Goal",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Montserrat",
-                                      color: Color(0xFF3C5BFA)),
+                                Flexible(
+                                    child: Image.asset(
+                                        'assets/images/office.png')),
+                                // SizedBox(
+                                //   width:
+                                //       MediaQuery.of(context).size.width * 0.1,
+                                // ),
+                                Flexible(
+                                  child: Text(
+                                    project[index],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Montserrat",
+                                        color: Color(0xFF3C5BFA)),
+                                  ),
                                 ),
                                 SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.4,
                                 ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.more_vert),
-                                  color: Color(0xFF3C5BFA),
+                                Flexible(
+                                  fit: FlexFit.tight,
+                                  child: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.more_vert),
+                                    color: Color(0xFF3C5BFA),
+                                  ),
                                 )
                               ],
                             ),
@@ -313,6 +323,7 @@ class _ProjectPageState extends State<ProjectPage> {
       //   ],
       // ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "3rd button",
         backgroundColor: Color(0xFF3C5BFA),
         onPressed: () {
           Navigator.pushNamed(context, 'addproject');

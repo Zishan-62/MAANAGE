@@ -68,7 +68,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 Icons.location_on,
                 color: Color(0xFF3C5BFA),
               ),
-              Expanded(child: Text('Masjid bandar'))
+              Expanded(
+                  child: Text(
+                address,
+                style: TextStyle(color: Colors.black),
+              ))
             ],
           ),
         ),
@@ -111,14 +115,19 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       Padding(
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height * 0.009),
-                        child: CircleAvatar(
-                          backgroundImage: AssetImage(
-                            'assets/images/zishan.jpg',
-                          ),
-                          // foregroundColor: Colors.grey,
-                          backgroundColor: Colors.grey,
-                          radius: 60,
-                        ),
+                        child: profile_image == "" || profile_image == null
+                            ? CircleAvatar(
+                                backgroundImage: AssetImage(
+                                  'assets/images/profile.png',
+                                ),
+                                // foregroundColor: Colors.grey,
+                                backgroundColor: Colors.grey,
+                                radius: 60,
+                              )
+                            : CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://softdigit.in/softdigits/uploads/images/users/${profile_image}"),
+                              ),
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
